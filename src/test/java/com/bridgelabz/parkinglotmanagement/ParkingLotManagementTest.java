@@ -1,4 +1,4 @@
-package com.bridgelabz.parkingmanagement;
+package com.bridgelabz.parkinglotmanagement;
 
 import org.junit.Assert;
 import org.junit.Before;

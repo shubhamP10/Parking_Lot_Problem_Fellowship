@@ -1,4 +1,4 @@
-package com.bridgelabz.parkingmanagement;
+package com.bridgelabz.parkinglotmanagement;
 
 public class ParkingLot {
     Object vehicle = null;
