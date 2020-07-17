@@ -9,4 +9,8 @@ public class ParkingLot {
         this.vehicle = vehicle;
         return true;
     }
+
+    public boolean unParkVehicle(Object vehicle) {
+        return true;
+    }
 }

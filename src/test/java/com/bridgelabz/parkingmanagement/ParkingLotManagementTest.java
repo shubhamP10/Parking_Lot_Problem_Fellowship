@@ -10,7 +10,7 @@ public class ParkingLotManagementTest {
     Object vehicle = null;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         parkingLot = new ParkingLot();
         vehicle = new Object();
     }
@@ -25,6 +25,13 @@ public class ParkingLotManagementTest {
     public void givenVehicle_WhenAlreadyParked_ShouldReturnFalse() {
         parkingLot.parkVehicle(vehicle);
         boolean parkingStatus = parkingLot.parkVehicle(vehicle);
+        Assert.assertFalse(parkingStatus);
+    }
+
+    @Test
+    public void givenVehicleIfParked_WhenUnParked_ShouldReturnTrue() {
+        parkingLot.parkVehicle(vehicle);
+        boolean parkingStatus = parkingLot.unParkVehicle(vehicle);
         Assert.assertFalse(parkingStatus);
     }
 }
