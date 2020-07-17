@@ -1,6 +1,7 @@
 package com.bridgelabz.parkinglotmanagement;
 
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
+import com.bridgelabz.parkinglotmanagement.service.ParkingLot;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class ParkingLotManagementTest {
         try {
             parkingLot.parkVehicle(vehicle);
             parkingLot.parkVehicle(vehicle2);
-        } catch (ParkingLotException e){
+        } catch (ParkingLotException e) {
             System.out.println(e.type);
             Assert.assertEquals(e.type, ParkingLotException.ExceptionType.LOT_FULL);
         }
