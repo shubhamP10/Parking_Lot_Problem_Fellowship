@@ -1,7 +1,12 @@
 package com.bridgelabz.parkingmanagement;
 
 public class ParkingLot {
-    public boolean getParkingStatus(Object o) {
+    Object vehicle = null;
+
+    public boolean parkVehicle(Object vehicle) {
+        if (this.vehicle != null)
+            return false;
+        this.vehicle = vehicle;
         return true;
     }
 }

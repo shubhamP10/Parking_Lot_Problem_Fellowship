@@ -8,7 +8,7 @@ public class ParkingLotManagementTest {
     @Test
     public void givenVehicle_WhenPark_ShouldReturnTrue() {
         ParkingLot parkingLot = new ParkingLot();
-        boolean parkingStatus = parkingLot.getParkingStatus(new Object());
+        boolean parkingStatus = parkingLot.parkVehicle(new Object());
         Assert.assertTrue(parkingStatus);
     }
 }
