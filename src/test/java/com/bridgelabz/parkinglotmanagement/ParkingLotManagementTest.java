@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglotmanagement;
 
+import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,27 +19,27 @@ public class ParkingLotManagementTest {
     }
 
     @Test
-    public void givenVehicle_WhenPark_ShouldReturnTrue() {
+    public void givenVehicle_WhenPark_ShouldReturnTrue() throws ParkingLotException {
         boolean parkingStatus = parkingLot.parkVehicle(vehicle);
         Assert.assertTrue(parkingStatus);
     }
 
     @Test
-    public void givenVehicle_WhenAlreadyParked_ShouldReturnFalse() {
+    public void givenVehicle_WhenAlreadyParked_ShouldReturnFalse() throws ParkingLotException {
         parkingLot.parkVehicle(vehicle);
         boolean parkingStatus = parkingLot.parkVehicle(vehicle);
         Assert.assertFalse(parkingStatus);
     }
 
     @Test
-    public void givenVehicleIfParked_WhenUnParked_ShouldReturnTrue() {
+    public void givenVehicleIfParked_WhenUnParked_ShouldReturnTrue() throws ParkingLotException {
         parkingLot.parkVehicle(vehicle);
         boolean parkingStatus = parkingLot.unParkVehicle(vehicle);
         Assert.assertTrue(parkingStatus);
     }
 
     @Test
-    public void givenVehicleIfParked_AndGivenDifferentVehicleToUnPark_ShouldReturnFalse() {
+    public void givenVehicleIfParked_AndGivenDifferentVehicleToUnPark_ShouldReturnFalse() throws ParkingLotException {
         parkingLot.parkVehicle(vehicle);
         boolean parkingStatus = parkingLot.unParkVehicle(vehicle2);
         Assert.assertFalse(parkingStatus);

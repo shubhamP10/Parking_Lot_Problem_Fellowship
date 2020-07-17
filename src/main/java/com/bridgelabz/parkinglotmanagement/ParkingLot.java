@@ -1,11 +1,13 @@
 package com.bridgelabz.parkinglotmanagement;
 
-public class ParkingLot {
-    Object vehicle = null;
+import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 
-    public boolean parkVehicle(Object vehicle) {
+public class ParkingLot {
+    private Object vehicle = null;
+
+    public boolean parkVehicle(Object vehicle) throws ParkingLotException {
         if (this.vehicle != null)
-            return false;
+            throw new ParkingLotException("Parking Lot is Full", ParkingLotException.ExceptionType.LOT_FULL);
         this.vehicle = vehicle;
         return true;
     }
