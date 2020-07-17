@@ -19,15 +19,10 @@ public class ParkingLot {
     }
 
     public boolean isParked(){
-        if (this.vehicle != null)
-            return true;
-        return false;
+        return this.vehicle != null;
     }
 
     public boolean isUnParked() {
-        if (this.vehicle == null) {
-            return true;
-        }
-        return false;
+        return this.vehicle == null;
     }
 }
