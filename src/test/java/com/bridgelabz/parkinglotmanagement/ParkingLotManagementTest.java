@@ -1,7 +1,9 @@
 package com.bridgelabz.parkinglotmanagement;
 
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
+import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.service.ParkingLot;
+import com.bridgelabz.parkinglotmanagement.utility.Owner;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,50 +11,50 @@ import org.junit.Test;
 public class ParkingLotManagementTest {
 
     ParkingLot parkingLot = null;
-    Object vehicle = null;
-    Object vehicle2 = null;
+    Owner owner = null;
 
     @Before
     public void setUp() {
         parkingLot = new ParkingLot();
-        vehicle = new Object();
-        vehicle2 = new Object();
+        owner = new Owner();
     }
 
     @Test
     public void givenVehicle_WhenPark_ShouldReturnTrue() throws ParkingLotException {
-        parkingLot.parkVehicle(vehicle);
-        boolean isParked = parkingLot.isParked();
+        Car car = new Car("1","KA-48-S-8055");
+        parkingLot.parkVehicle(car);
+        boolean isParked = parkingLot.isParked(car);
         Assert.assertTrue(isParked);
     }
 
     @Test
     public void givenVehicleIfParked_WhenUnParked_ShouldReturnTrue() throws ParkingLotException {
-        parkingLot.parkVehicle(vehicle);
-        parkingLot.unParkVehicle(vehicle);
-        boolean isUnParked = parkingLot.isUnParked();
+        Car car = new Car("1","KA-48-S-8055");
+        parkingLot.parkVehicle(car);
+        parkingLot.unParkVehicle(car);
+        boolean isUnParked = parkingLot.isUnParked(car);
         Assert.assertTrue(isUnParked);
-    }
-
-    @Test
-    public void givenVehicleToPark_IfLotFull_ShouldThrowException() {
-        try {
-            parkingLot.parkVehicle(vehicle);
-            parkingLot.parkVehicle(vehicle2);
-        } catch (ParkingLotException e) {
-            System.out.println(e.type);
-            Assert.assertEquals(e.type, ParkingLotException.ExceptionType.LOT_FULL);
-        }
     }
 
     @Test
     public void givenVehicleToUnPark_WhenNull_ShouldThrowException() {
         try {
-            parkingLot.parkVehicle(vehicle);
+            Car car = new Car("1","KA-48-S-8055");
+            parkingLot.parkVehicle(car);
             parkingLot.unParkVehicle(null);
         } catch (ParkingLotException e) {
             System.out.println(e.type);
             Assert.assertEquals(e.type, ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         }
+    }
+
+    @Test
+    public void givenVehicleToPark_WhenOwner_ShouldInformInformLotFull() throws ParkingLotException {
+        parkingLot.addMonitor(owner);
+        Car car = new Car("1","KA-48-S-8055");
+        Car car2 = new Car("2","KA-01-S-1234");
+        parkingLot.parkVehicle(car);
+        parkingLot.parkVehicle(car2);
+       Assert.assertEquals("Parking Lot Is Full", owner.getMessage());
     }
 }
