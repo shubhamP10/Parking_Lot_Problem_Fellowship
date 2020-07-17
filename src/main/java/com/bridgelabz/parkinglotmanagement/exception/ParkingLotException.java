@@ -10,7 +10,7 @@ public class ParkingLotException extends Throwable {
     }
 
     public enum ExceptionType {
-        LOT_FULL
+        NO_SUCH_VEHICLE, VEHICLE_MISMATCH, LOT_FULL
     }
 
 

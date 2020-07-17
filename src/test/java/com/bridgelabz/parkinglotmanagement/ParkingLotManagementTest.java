@@ -20,28 +20,27 @@ public class ParkingLotManagementTest {
 
     @Test
     public void givenVehicle_WhenPark_ShouldReturnTrue() throws ParkingLotException {
-        boolean parkingStatus = parkingLot.parkVehicle(vehicle);
-        Assert.assertTrue(parkingStatus);
-    }
-
-    @Test
-    public void givenVehicle_WhenAlreadyParked_ShouldReturnFalse() throws ParkingLotException {
         parkingLot.parkVehicle(vehicle);
-        boolean parkingStatus = parkingLot.parkVehicle(vehicle);
-        Assert.assertFalse(parkingStatus);
+        boolean parkingStatus = parkingLot.isParked();
+        Assert.assertTrue(parkingStatus);
     }
 
     @Test
     public void givenVehicleIfParked_WhenUnParked_ShouldReturnTrue() throws ParkingLotException {
         parkingLot.parkVehicle(vehicle);
-        boolean parkingStatus = parkingLot.unParkVehicle(vehicle);
+        parkingLot.unParkVehicle(vehicle);
+        boolean parkingStatus = parkingLot.isUnParked();
         Assert.assertTrue(parkingStatus);
     }
 
     @Test
-    public void givenVehicleIfParked_AndGivenDifferentVehicleToUnPark_ShouldReturnFalse() throws ParkingLotException {
-        parkingLot.parkVehicle(vehicle);
-        boolean parkingStatus = parkingLot.unParkVehicle(vehicle2);
-        Assert.assertFalse(parkingStatus);
+    public void givenVehicleIfParked_AndGivenDifferentVehicleToUnPark_ShouldThrowException() {
+       try {
+           parkingLot.parkVehicle(vehicle);
+           parkingLot.isUnParked();
+       } catch (ParkingLotException e){
+           Assert.assertEquals(e.type, ParkingLotException.ExceptionType.VEHICLE_MISMATCH);
+       }
+
     }
 }
