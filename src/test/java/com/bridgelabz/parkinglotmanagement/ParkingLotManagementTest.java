@@ -3,6 +3,7 @@ package com.bridgelabz.parkinglotmanagement;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.service.ParkingLot;
+import com.bridgelabz.parkinglotmanagement.utility.AirportSecurity;
 import com.bridgelabz.parkinglotmanagement.utility.Owner;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,6 +13,7 @@ public class ParkingLotManagementTest {
 
     ParkingLot parkingLot = null;
     Owner owner = null;
+    AirportSecurity security = null;
 
     @Before
     public void setUp() {
@@ -56,5 +58,16 @@ public class ParkingLotManagementTest {
         parkingLot.parkVehicle(car);
         parkingLot.parkVehicle(car2);
        Assert.assertEquals("Parking Lot Is Full", owner.getMessage());
+    }
+    @Test
+    public void givenVehicleToPark_WhenOwnerAndSecurity_ShouldInformInformLotFull() throws ParkingLotException {
+        parkingLot.addMonitor(owner);
+        parkingLot.addMonitor(security);
+        Car car = new Car("1","KA-48-S-8055");
+        Car car2 = new Car("2","KA-01-S-1234");
+        parkingLot.parkVehicle(car);
+        parkingLot.parkVehicle(car2);
+        Assert.assertEquals("Parking Lot Is Full", owner.getMessage());
+        Assert.assertEquals("Parking Lot Is Full", security.getMessage());
     }
 }
