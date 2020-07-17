@@ -36,4 +36,11 @@ public class ParkingLotManagementTest {
         boolean parkingStatus = parkingLot.unParkVehicle(vehicle);
         Assert.assertTrue(parkingStatus);
     }
+
+    @Test
+    public void givenVehicleIfParked_AndGivenDifferentVehicleToUnPark_ShouldReturnFalse() {
+        parkingLot.parkVehicle(vehicle);
+        boolean parkingStatus = parkingLot.unParkVehicle(vehicle2);
+        Assert.assertFalse(parkingStatus);
+    }
 }
