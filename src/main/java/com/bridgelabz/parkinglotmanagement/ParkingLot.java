@@ -16,7 +16,6 @@ public class ParkingLot {
             throw new ParkingLotException("No Such Vehicle", ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         if (this.vehicle != null && this.vehicle.equals(vehicle))
             this.vehicle = null;
-        throw new ParkingLotException("Vehicle Mismatch", ParkingLotException.ExceptionType.VEHICLE_MISMATCH);
     }
 
     public boolean isParked(){

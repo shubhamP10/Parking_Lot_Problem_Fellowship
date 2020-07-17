@@ -34,17 +34,6 @@ public class ParkingLotManagementTest {
     }
 
     @Test
-    public void givenVehicleIfParked_AndGivenDifferentVehicleToUnPark_ShouldThrowException() {
-       try {
-           parkingLot.parkVehicle(vehicle);
-           parkingLot.unParkVehicle(vehicle2);
-       } catch (ParkingLotException e){
-           System.out.println(e.type);
-           Assert.assertEquals(e.type, ParkingLotException.ExceptionType.VEHICLE_MISMATCH);
-       }
-    }
-
-    @Test
     public void givenVehicleToPark_IfLotFull_ShouldThrowException() {
         try {
             parkingLot.parkVehicle(vehicle);
@@ -52,6 +41,17 @@ public class ParkingLotManagementTest {
         } catch (ParkingLotException e){
             System.out.println(e.type);
             Assert.assertEquals(e.type, ParkingLotException.ExceptionType.LOT_FULL);
+        }
+    }
+
+    @Test
+    public void givenVehicleToUnPark_WhenNull_ShouldThrowException() {
+        try {
+            parkingLot.parkVehicle(vehicle);
+            parkingLot.unParkVehicle(null);
+        } catch (ParkingLotException e) {
+            System.out.println(e.type);
+            Assert.assertEquals(e.type, ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         }
     }
 }
