@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglotmanagement.service;
 
+import com.bridgelabz.parkinglotmanagement.enums.Notifications;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.utility.IParkingMonitor;
@@ -29,7 +30,7 @@ public class ParkingLot implements IParkingLot {
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         }
         if (this.parkingMap.size() == PARKING_LOT_CAPACITY) {
-            this.notifyToMonitor("Parking Lot Is Full");
+            this.notifyToMonitor(Notifications.PARKING_LOT_IS_FULL.message);
         }
     }
 
@@ -46,7 +47,7 @@ public class ParkingLot implements IParkingLot {
         if (!parkingMap.containsKey(car.getID()))
             throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_MISMATCH);
         parkingMap.remove(car.getID());
-        this.notifyToMonitor("Have Space To Park");
+        this.notifyToMonitor(Notifications.HAVE_SPACE_TO_PARK.message);
     }
 
     /**

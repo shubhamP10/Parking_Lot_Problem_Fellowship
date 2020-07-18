@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglotmanagement;
 
+import com.bridgelabz.parkinglotmanagement.enums.Notifications;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.service.ParkingLot;
@@ -22,6 +23,7 @@ public class ParkingLotManagementTest {
         security = new AirportSecurity();
     }
 
+//    UC1
     @Test
     public void givenVehicle_WhenPark_ShouldReturnTrue() throws ParkingLotException {
         Car car = new Car("1", "KA-48-S-8055");
@@ -30,6 +32,7 @@ public class ParkingLotManagementTest {
         Assert.assertTrue(isParked);
     }
 
+//    UC2
     @Test
     public void givenVehicleIfParked_WhenUnParked_ShouldReturnTrue() throws ParkingLotException {
         Car car = new Car("1", "KA-48-S-8055");
@@ -46,11 +49,11 @@ public class ParkingLotManagementTest {
             parkingLot.parkVehicle(car);
             parkingLot.unParkVehicle(null);
         } catch (ParkingLotException e) {
-            System.out.println(e.type);
             Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
         }
     }
 
+    //    UC3
     @Test
     public void givenVehicleToPark_WhenOwner_ShouldInformInformLotFull() throws ParkingLotException {
         parkingLot.addMonitor(owner);
@@ -58,9 +61,10 @@ public class ParkingLotManagementTest {
         Car car2 = new Car("2", "KA-01-S-1234");
         parkingLot.parkVehicle(car);
         parkingLot.parkVehicle(car2);
-        Assert.assertEquals("Parking Lot Is Full", owner.getMessage());
+        Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.getMessage());
     }
 
+//    UC4
     @Test
     public void givenVehicleToPark_WhenOwnerAndSecurity_ShouldInformLotFull() throws ParkingLotException {
         parkingLot.addMonitor(owner);
@@ -69,8 +73,8 @@ public class ParkingLotManagementTest {
         Car car2 = new Car("2", "KA-01-S-1234");
         parkingLot.parkVehicle(car);
         parkingLot.parkVehicle(car2);
-        Assert.assertEquals("Parking Lot Is Full", owner.getMessage());
-        Assert.assertEquals("Parking Lot Is Full", security.getMessage());
+        Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.getMessage());
+        Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, security.getMessage());
     }
 
     @Test
@@ -96,7 +100,6 @@ public class ParkingLotManagementTest {
             parkingLot.parkVehicle(car);
             parkingLot.unParkVehicle(car2);
         } catch (ParkingLotException e) {
-            System.out.println(e.type);
             Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_MISMATCH, e.type);
         }
     }
@@ -110,9 +113,9 @@ public class ParkingLotManagementTest {
         Car car2 = new Car("2", "KA-01-S-1234");
         parkingLot.parkVehicle(car);
         parkingLot.parkVehicle(car2);
-        Assert.assertEquals("Parking Lot Is Full", owner.getMessage());
-        Assert.assertEquals("Parking Lot Is Full", security.getMessage());
+        Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.getMessage());
+        Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, security.getMessage());
         parkingLot.unParkVehicle(car2);
-        Assert.assertEquals("Have Space To Park", owner.getMessage());
+        Assert.assertEquals(Notifications.HAVE_SPACE_TO_PARK.message, owner.getMessage());
     }
 }
