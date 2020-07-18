@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class ParkingLot implements IParkingLot {
 
-    private final int PARKING_LOT_CAPACITY = 2;
-    private List<IParkingMonitor> monitors = new ArrayList<>();
-    private Map<String, Car> parkingMap = new HashMap<>();
+    final int PARKING_LOT_CAPACITY = 2;
+    private final List<IParkingMonitor> monitors = new ArrayList<>();
+    private final Map<String, Car> parkingMap = new HashMap<>();
 
     /**
      * Method To Park The Car.
@@ -26,16 +26,12 @@ public class ParkingLot implements IParkingLot {
         if (this.parkingMap.size() < PARKING_LOT_CAPACITY) {
             parkingMap.put(car.getID(), car);
         } else if (this.parkingMap.size() == PARKING_LOT_CAPACITY) {
-            throw new ParkingLotException("Parking Lot is Full", ParkingLotException.ExceptionType.LOT_FULL);
+            this.notifyToMonitor();
+            throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         }
         if (this.parkingMap.size() == PARKING_LOT_CAPACITY) {
-            this.notifyToMonitor("Parking Lot Is Full");
+            this.notifyToMonitor();
         }
-    }
-
-    private void notifyToMonitor(String message) {
-        monitors.get(0).update(message);
-        monitors.get(1).update(message);
     }
 
     /**
@@ -47,9 +43,30 @@ public class ParkingLot implements IParkingLot {
     @Override
     public void unParkVehicle(Car car) throws ParkingLotException {
         if (car == null)
-            throw new ParkingLotException("No Such Vehicle", ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
-        if (parkingMap.containsKey(car.getID()))
-            parkingMap.remove(car.getID());
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
+        if (!parkingMap.containsKey(car.getID()))
+            throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_MISMATCH);
+        parkingMap.remove(car.getID());
+    }
+
+    /**
+     * Method To Add Monitors
+     *
+     * @param monitor
+     */
+    @Override
+    public void addMonitor(IParkingMonitor monitor) {
+        this.monitors.add(monitor);
+    }
+
+    /**
+     * Method To Update Message To The Monitor
+     */
+    @Override
+    public void notifyToMonitor() {
+        for (IParkingMonitor monitor : monitors) {
+            monitor.updateMessage("Parking Lot Is Full");
+        }
     }
 
     /**
@@ -70,9 +87,5 @@ public class ParkingLot implements IParkingLot {
     @Override
     public boolean isUnParked(Car car) {
         return (!parkingMap.containsKey(car.getID()));
-    }
-
-    public void addMonitor(IParkingMonitor monitor) {
-        this.monitors.add(monitor);
     }
 }
