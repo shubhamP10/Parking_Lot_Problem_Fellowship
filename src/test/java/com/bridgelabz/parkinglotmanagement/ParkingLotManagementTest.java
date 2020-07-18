@@ -62,7 +62,7 @@ public class ParkingLotManagementTest {
     }
 
     @Test
-    public void givenVehicleToPark_WhenOwnerAndSecurity_ShouldInformInformLotFull() throws ParkingLotException {
+    public void givenVehicleToPark_WhenOwnerAndSecurity_ShouldInformLotFull() throws ParkingLotException {
         parkingLot.addMonitor(owner);
         parkingLot.addMonitor(security);
         Car car = new Car("1", "KA-48-S-8055");
@@ -99,5 +99,20 @@ public class ParkingLotManagementTest {
             System.out.println(e.type);
             Assert.assertEquals(ParkingLotException.ExceptionType.VEHICLE_MISMATCH, e.type);
         }
+    }
+
+    //    UC5
+    @Test
+    public void givenVehicleToPark_WhenHavingSpaceAfterUnPark_ShouldInformHaveSpaceToPark() throws ParkingLotException {
+        parkingLot.addMonitor(owner);
+        parkingLot.addMonitor(security);
+        Car car = new Car("1", "KA-48-S-8055");
+        Car car2 = new Car("2", "KA-01-S-1234");
+        parkingLot.parkVehicle(car);
+        parkingLot.parkVehicle(car2);
+        Assert.assertEquals("Parking Lot Is Full", owner.getMessage());
+        Assert.assertEquals("Parking Lot Is Full", security.getMessage());
+        parkingLot.unParkVehicle(car2);
+        Assert.assertEquals("Have Space To Park", owner.getMessage());
     }
 }

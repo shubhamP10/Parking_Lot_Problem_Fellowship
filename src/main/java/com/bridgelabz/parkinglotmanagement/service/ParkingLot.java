@@ -26,11 +26,10 @@ public class ParkingLot implements IParkingLot {
         if (this.parkingMap.size() < PARKING_LOT_CAPACITY) {
             parkingMap.put(car.getID(), car);
         } else if (this.parkingMap.size() == PARKING_LOT_CAPACITY) {
-            this.notifyToMonitor();
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         }
         if (this.parkingMap.size() == PARKING_LOT_CAPACITY) {
-            this.notifyToMonitor();
+            this.notifyToMonitor("Parking Lot Is Full");
         }
     }
 
@@ -47,12 +46,13 @@ public class ParkingLot implements IParkingLot {
         if (!parkingMap.containsKey(car.getID()))
             throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_MISMATCH);
         parkingMap.remove(car.getID());
+        this.notifyToMonitor("Have Space To Park");
     }
 
     /**
      * Method To Add Monitors
      *
-     * @param monitor
+     * @param monitor Interface
      */
     @Override
     public void addMonitor(IParkingMonitor monitor) {
@@ -63,9 +63,9 @@ public class ParkingLot implements IParkingLot {
      * Method To Update Message To The Monitor
      */
     @Override
-    public void notifyToMonitor() {
+    public void notifyToMonitor(String message) {
         for (IParkingMonitor monitor : monitors) {
-            monitor.updateMessage("Parking Lot Is Full");
+            monitor.updateMessage(message);
         }
     }
 
