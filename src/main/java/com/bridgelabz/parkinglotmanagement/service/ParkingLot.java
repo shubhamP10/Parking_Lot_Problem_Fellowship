@@ -35,6 +35,7 @@ public class ParkingLot implements IParkingLot {
 
     private void notifyToMonitor(String message) {
         monitors.get(0).update(message);
+        monitors.get(1).update(message);
     }
 
     /**
