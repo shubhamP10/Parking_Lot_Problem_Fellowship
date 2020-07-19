@@ -18,7 +18,7 @@ public class ParkingLotManagementTest {
 
     @Before
     public void setUp() {
-        parkingLot = new ParkingLot();
+        parkingLot = new ParkingLot(2);
         owner = new Owner();
         security = new AirportSecurity();
     }

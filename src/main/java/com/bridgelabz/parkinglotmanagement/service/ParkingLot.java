@@ -12,9 +12,13 @@ import java.util.Map;
 
 public class ParkingLot implements IParkingLot {
 
-    final int PARKING_LOT_CAPACITY = 2;
+    private final int PARKING_LOT_CAPACITY;
     private final List<IParkingMonitor> monitors = new ArrayList<>();
     private final Map<String, Car> parkingMap = new HashMap<>();
+
+    public ParkingLot(int capacity) {
+        this.PARKING_LOT_CAPACITY = capacity;
+    }
 
     /**
      * Method To Park The Car.
