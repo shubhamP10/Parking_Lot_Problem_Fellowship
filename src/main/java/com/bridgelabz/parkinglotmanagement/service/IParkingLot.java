@@ -12,8 +12,6 @@ public interface IParkingLot {
 
     boolean isParked(Car car);
 
-    boolean isUnParked(Car car);
-
     void notifyToMonitor(String message);
 
     void addMonitor(IParkingMonitor monitor);

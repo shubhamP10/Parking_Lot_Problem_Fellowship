@@ -86,13 +86,4 @@ public class ParkingLot implements IParkingLot {
         return parkingMap.containsKey(car.getID());
     }
 
-    /**
-     * Method To check if Car is Un-Parked or Not.
-     *
-     * @return boolean value
-     */
-    @Override
-    public boolean isUnParked(Car car) {
-        return (!parkingMap.containsKey(car.getID()));
-    }
 }

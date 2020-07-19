@@ -34,12 +34,12 @@ public class ParkingLotManagementTest {
 
 //    UC2
     @Test
-    public void givenVehicleIfParked_WhenUnParked_ShouldReturnTrue() throws ParkingLotException {
+    public void givenVehicleIfParked_WhenUnParked_ShouldReturnFalse() throws ParkingLotException {
         Car car = new Car("1", "KA-48-S-8055");
         parkingLot.parkVehicle(car);
         parkingLot.unParkVehicle(car);
-        boolean isUnParked = parkingLot.isUnParked(car);
-        Assert.assertTrue(isUnParked);
+        boolean isParked = parkingLot.isParked(car);
+        Assert.assertFalse(isParked);
     }
 
     @Test
