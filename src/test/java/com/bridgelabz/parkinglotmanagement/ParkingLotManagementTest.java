@@ -118,4 +118,14 @@ public class ParkingLotManagementTest {
         parkingLot.unParkVehicle(car2);
         Assert.assertEquals(Notifications.HAVE_SPACE_TO_PARK.message, owner.getMessage());
     }
+
+    @Test
+    public void givenVehicleToUnPark_WhenParkingLotIsEmpty_ShouldThrowException() {
+        try {
+            Car car = new Car("1", "KA-48-S-8055");
+            parkingLot.unParkVehicle(car);
+        } catch (ParkingLotException e){
+            Assert.assertEquals(ParkingLotException.ExceptionType.PARKING_LOT_IS_EMPTY, e.type);
+        }
+    }
 }

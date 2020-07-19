@@ -44,6 +44,8 @@ public class ParkingLot implements IParkingLot {
     public void unParkVehicle(Car car) throws ParkingLotException {
         if (car == null)
             throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
+        if (parkingMap.size() == 0)
+            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_EMPTY);
         if (!parkingMap.containsKey(car.getID()))
             throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_MISMATCH);
         parkingMap.remove(car.getID());
