@@ -1,6 +1,6 @@
-package com.bridgelabz.parkinglotmanagement.utility;
+package com.bridgelabz.parkinglotmanagement.observer;
 
-public class Owner implements IParkingMonitor{
+public class Owner implements IParkingObserver {
     private String message;
 
     @Override

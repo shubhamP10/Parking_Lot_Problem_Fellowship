@@ -1,6 +1,6 @@
-package com.bridgelabz.parkinglotmanagement.utility;
+package com.bridgelabz.parkinglotmanagement.observer;
 
-public class AirportSecurity implements IParkingMonitor{
+public class AirportSecurity implements IParkingObserver {
     private String message;
 
     @Override

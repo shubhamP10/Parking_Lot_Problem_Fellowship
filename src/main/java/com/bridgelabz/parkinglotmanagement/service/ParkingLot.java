@@ -3,7 +3,7 @@ package com.bridgelabz.parkinglotmanagement.service;
 import com.bridgelabz.parkinglotmanagement.enums.Notifications;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
-import com.bridgelabz.parkinglotmanagement.utility.IParkingMonitor;
+import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Map;
 public class ParkingLot implements IParkingLot {
 
     private final int PARKING_LOT_CAPACITY;
-    private final List<IParkingMonitor> monitors = new ArrayList<>();
+    private final List<IParkingObserver> observers = new ArrayList<>();
     private final Map<String, Car> parkingMap = new HashMap<>();
 
     public ParkingLot(int capacity) {
@@ -30,11 +30,11 @@ public class ParkingLot implements IParkingLot {
     public void parkVehicle(Car car) throws ParkingLotException {
         if (this.parkingMap.size() < PARKING_LOT_CAPACITY) {
             parkingMap.put(car.getID(), car);
-        } else if (this.parkingMap.size() == PARKING_LOT_CAPACITY) {
+        } else {
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         }
         if (this.parkingMap.size() == PARKING_LOT_CAPACITY) {
-            this.notifyToMonitor(Notifications.PARKING_LOT_IS_FULL.message);
+            this.notifyToObserver(Notifications.PARKING_LOT_IS_FULL.message);
         }
     }
 
@@ -53,26 +53,26 @@ public class ParkingLot implements IParkingLot {
         if (!parkingMap.containsKey(car.getID()))
             throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_MISMATCH);
         parkingMap.remove(car.getID());
-        this.notifyToMonitor(Notifications.HAVE_SPACE_TO_PARK.message);
+        this.notifyToObserver(Notifications.HAVE_SPACE_TO_PARK.message);
     }
 
     /**
-     * Method To Add Monitors
+     * Method To Add Observers
      *
-     * @param monitor Interface
+     * @param observer Interface
      */
     @Override
-    public void addMonitor(IParkingMonitor monitor) {
-        this.monitors.add(monitor);
+    public void addObserver(IParkingObserver observer) {
+        this.observers.add(observer);
     }
 
     /**
-     * Method To Update Message To The Monitor
+     * Method To Update Message To The Observer
      */
     @Override
-    public void notifyToMonitor(String message) {
-        for (IParkingMonitor monitor : monitors) {
-            monitor.updateMessage(message);
+    public void notifyToObserver(String message) {
+        for (IParkingObserver observer : observers) {
+            observer.updateMessage(message);
         }
     }
 

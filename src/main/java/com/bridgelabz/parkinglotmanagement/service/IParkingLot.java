@@ -2,7 +2,7 @@ package com.bridgelabz.parkinglotmanagement.service;
 
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
-import com.bridgelabz.parkinglotmanagement.utility.IParkingMonitor;
+import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 
 public interface IParkingLot {
 
@@ -12,7 +12,7 @@ public interface IParkingLot {
 
     boolean isParked(Car car);
 
-    void notifyToMonitor(String message);
+    void notifyToObserver(String message);
 
-    void addMonitor(IParkingMonitor monitor);
+    void addObserver(IParkingObserver monitor);
 }

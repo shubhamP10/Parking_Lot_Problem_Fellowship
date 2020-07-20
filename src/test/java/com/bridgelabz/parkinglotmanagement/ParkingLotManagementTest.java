@@ -3,9 +3,9 @@ package com.bridgelabz.parkinglotmanagement;
 import com.bridgelabz.parkinglotmanagement.enums.Notifications;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
+import com.bridgelabz.parkinglotmanagement.observer.AirportSecurity;
+import com.bridgelabz.parkinglotmanagement.observer.Owner;
 import com.bridgelabz.parkinglotmanagement.service.ParkingLot;
-import com.bridgelabz.parkinglotmanagement.utility.AirportSecurity;
-import com.bridgelabz.parkinglotmanagement.utility.Owner;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,8 +55,8 @@ public class ParkingLotManagementTest {
 
     //    UC3
     @Test
-    public void givenVehicleToPark_WhenOwner_ShouldInformInformLotFull() throws ParkingLotException {
-        parkingLot.addMonitor(owner);
+    public void givenVehicleToPark_WhenOwner_ShouldInformFull() throws ParkingLotException {
+        parkingLot.addObserver(owner);
         Car car = new Car("1", "KA-48-S-8055");
         Car car2 = new Car("2", "KA-01-S-1234");
         parkingLot.parkVehicle(car);
@@ -67,8 +67,8 @@ public class ParkingLotManagementTest {
     //    UC4
     @Test
     public void givenVehicleToPark_WhenOwnerAndSecurity_ShouldInformLotFull() throws ParkingLotException {
-        parkingLot.addMonitor(owner);
-        parkingLot.addMonitor(security);
+        parkingLot.addObserver(owner);
+        parkingLot.addObserver(security);
         Car car = new Car("1", "KA-48-S-8055");
         Car car2 = new Car("2", "KA-01-S-1234");
         parkingLot.parkVehicle(car);
@@ -80,7 +80,7 @@ public class ParkingLotManagementTest {
     @Test
     public void givenVehicleToPark_WhenMoreNumberOfVehicles_ShouldThrowException() {
         try {
-            parkingLot.addMonitor(owner);
+            parkingLot.addObserver(owner);
             Car car = new Car("1", "KA-48-S-8055");
             Car car2 = new Car("2", "KA-01-S-1234");
             Car car3 = new Car("3", "KA-02-S-1234");
@@ -107,8 +107,8 @@ public class ParkingLotManagementTest {
     //    UC5
     @Test
     public void givenVehicleToPark_WhenHavingSpaceAfterUnPark_ShouldInformHaveSpaceToPark() throws ParkingLotException {
-        parkingLot.addMonitor(owner);
-        parkingLot.addMonitor(security);
+        parkingLot.addObserver(owner);
+        parkingLot.addObserver(security);
         Car car = new Car("1", "KA-48-S-8055");
         Car car2 = new Car("2", "KA-01-S-1234");
         parkingLot.parkVehicle(car);

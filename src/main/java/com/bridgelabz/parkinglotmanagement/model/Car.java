@@ -2,7 +2,7 @@ package com.bridgelabz.parkinglotmanagement.model;
 
 public class Car {
     private final String id;
-    private String regNumber;
+    private final String regNumber;
 
     public Car(String id, String regNumber) {
         this.regNumber = regNumber;
