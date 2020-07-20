@@ -19,7 +19,7 @@ public class Owner implements IParkingObserver {
         return message;
     }
 
-    public String parkVehicle(Map<String, Car> parkingMap) {
+    public String generateKeyForLot(Map<String, Car> parkingMap) {
         if (parkingMap.size() == 0)
             this.key = String.valueOf(lotNumber);
         for (String key : parkingMap.keySet()) {

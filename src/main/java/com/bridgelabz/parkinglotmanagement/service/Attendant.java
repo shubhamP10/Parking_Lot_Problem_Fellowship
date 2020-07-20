@@ -8,6 +8,6 @@ import java.util.Map;
 public class Attendant {
     Owner owner = new Owner();
     public String parkVehicle(Map<String, Car> parkingMap) {
-       return owner.parkVehicle(parkingMap);
+       return owner.generateKeyForLot(parkingMap);
     }
 }
