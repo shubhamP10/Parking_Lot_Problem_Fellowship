@@ -1,7 +1,7 @@
 package com.bridgelabz.parkinglotmanagement.model;
 
 public class Car {
-    private String id;
+    private final String id;
     private String regNumber;
 
     public Car(String id, String regNumber) {

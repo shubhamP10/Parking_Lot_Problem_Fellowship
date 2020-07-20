@@ -23,7 +23,7 @@ public class ParkingLotManagementTest {
         security = new AirportSecurity();
     }
 
-//    UC1
+    //    UC1
     @Test
     public void givenVehicle_WhenPark_ShouldReturnTrue() throws ParkingLotException {
         Car car = new Car("1", "KA-48-S-8055");
@@ -32,7 +32,7 @@ public class ParkingLotManagementTest {
         Assert.assertTrue(isParked);
     }
 
-//    UC2
+    //    UC2
     @Test
     public void givenVehicleIfParked_WhenUnParked_ShouldReturnFalse() throws ParkingLotException {
         Car car = new Car("1", "KA-48-S-8055");
@@ -64,7 +64,7 @@ public class ParkingLotManagementTest {
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.getMessage());
     }
 
-//    UC4
+    //    UC4
     @Test
     public void givenVehicleToPark_WhenOwnerAndSecurity_ShouldInformLotFull() throws ParkingLotException {
         parkingLot.addMonitor(owner);
@@ -124,7 +124,7 @@ public class ParkingLotManagementTest {
         try {
             Car car = new Car("1", "KA-48-S-8055");
             parkingLot.unParkVehicle(car);
-        } catch (ParkingLotException e){
+        } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.PARKING_LOT_IS_EMPTY, e.type);
         }
     }

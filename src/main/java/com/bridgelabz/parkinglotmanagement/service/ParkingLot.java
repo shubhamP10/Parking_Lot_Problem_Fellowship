@@ -85,5 +85,4 @@ public class ParkingLot implements IParkingLot {
     public boolean isParked(Car car) {
         return parkingMap.containsKey(car.getID());
     }
-
 }
