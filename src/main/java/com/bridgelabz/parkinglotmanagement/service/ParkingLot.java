@@ -15,6 +15,7 @@ public class ParkingLot implements IParkingLot {
     private final int PARKING_LOT_CAPACITY;
     private final List<IParkingObserver> observers = new ArrayList<>();
     private final Map<String, Car> parkingMap = new HashMap<>();
+    Attendant attendant = new Attendant();
 
     public ParkingLot(int capacity) {
         this.PARKING_LOT_CAPACITY = capacity;
@@ -29,7 +30,9 @@ public class ParkingLot implements IParkingLot {
     @Override
     public void parkVehicle(Car car) throws ParkingLotException {
         if (this.parkingMap.size() < PARKING_LOT_CAPACITY) {
-            parkingMap.put(car.getID(), car);
+            String key = attendant.parkVehicle(parkingMap);
+            parkingMap.put(key, car);
+            System.out.println(parkingMap);
         } else {
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         }
