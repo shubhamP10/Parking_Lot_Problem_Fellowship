@@ -84,6 +84,7 @@ public class ParkingLot implements IParkingLot {
         return parkingMap.containsKey(car.getID());
     }
 
+    @Override
     public String getVehicle(Car car) {
         for (String key : parkingMap.keySet()) {
             if (parkingMap.get(key) == car)
