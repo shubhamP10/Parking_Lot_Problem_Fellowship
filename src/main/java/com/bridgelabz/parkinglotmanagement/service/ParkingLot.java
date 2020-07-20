@@ -5,10 +5,7 @@ import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ParkingLot implements IParkingLot {
 
@@ -86,5 +83,13 @@ public class ParkingLot implements IParkingLot {
     @Override
     public boolean isParked(Car car) {
         return parkingMap.containsKey(car.getID());
+    }
+
+    public String getVehicle(Car car) {
+        for (String key : parkingMap.keySet()) {
+            if (parkingMap.get(key) == car)
+                return key;
+        }
+        return null;
     }
 }

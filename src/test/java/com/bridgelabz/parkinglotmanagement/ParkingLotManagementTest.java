@@ -128,4 +128,17 @@ public class ParkingLotManagementTest {
             Assert.assertEquals(ParkingLotException.ExceptionType.PARKING_LOT_IS_EMPTY, e.type);
         }
     }
+
+//    UC7
+
+    @Test
+    public void givenVehicleToUnPark_WhenFindVehicle_ShouldReturnKey() throws ParkingLotException {
+        parkingLot.addObserver(owner);
+        Car firstCar = new Car("1", "KA-48-S-8055");
+        Car secondCar = new Car("2", "KA-01-S-1234");
+        parkingLot.parkVehicle(firstCar);
+        parkingLot.parkVehicle(secondCar);
+        String key = parkingLot.getVehicle(secondCar);
+        Assert.assertEquals("2", key);
+    }
 }
