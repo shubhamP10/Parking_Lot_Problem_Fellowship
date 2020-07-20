@@ -32,7 +32,6 @@ public class ParkingLot implements IParkingLot {
         if (this.parkingMap.size() < PARKING_LOT_CAPACITY) {
             String key = attendant.parkVehicle(parkingMap);
             parkingMap.put(key, car);
-            System.out.println(parkingMap);
         } else {
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         }

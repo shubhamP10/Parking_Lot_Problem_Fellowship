@@ -1,23 +1,13 @@
 package com.bridgelabz.parkinglotmanagement.service;
 
 import com.bridgelabz.parkinglotmanagement.model.Car;
+import com.bridgelabz.parkinglotmanagement.observer.Owner;
 
 import java.util.Map;
 
 public class Attendant {
-
-    String key;
-    int lotNumber = 1;
-
+    Owner owner = new Owner();
     public String parkVehicle(Map<String, Car> parkingMap) {
-        if (parkingMap.size() == 0)
-            this.key = String.valueOf(lotNumber);
-        for (String key : parkingMap.keySet()) {
-            this.key = key;
-            if (!parkingMap.get(key).equals(key))
-                this.key = String.valueOf(lotNumber);
-        }
-        lotNumber++;
-        return key;
+       return owner.parkVehicle(parkingMap);
     }
 }

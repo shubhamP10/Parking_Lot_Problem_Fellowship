@@ -128,6 +128,4 @@ public class ParkingLotManagementTest {
             Assert.assertEquals(ParkingLotException.ExceptionType.PARKING_LOT_IS_EMPTY, e.type);
         }
     }
-
-
 }
