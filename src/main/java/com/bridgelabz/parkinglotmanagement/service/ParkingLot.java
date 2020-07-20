@@ -40,19 +40,18 @@ public class ParkingLot implements IParkingLot {
     /**
      * Method To Un-Park The Car.
      *
-     * @param car object
+     * @param key
      * @throws ParkingLotException NO SUCH VEHICLE
      */
     @Override
-    public void unParkVehicle(Car car) throws ParkingLotException {
-        if (car == null)
+    public void unParkVehicle(String key) throws ParkingLotException {
+        if (key == null)
             throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
-        if (parkingMap.size() == 0)
-            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_EMPTY);
-        if (!parkingMap.containsKey(car.getID()))
-            throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_MISMATCH);
-        parkingMap.remove(car.getID());
-        this.notifyToObserver(Notifications.HAVE_SPACE_TO_PARK.message);
+        if (parkingMap.containsKey(key)){
+            attendant.unParkVehicle(key);
+            parkingMap.remove(key);
+            notifyToObserver(Notifications.HAVE_SPACE_TO_PARK.message);
+        }
     }
 
     /**

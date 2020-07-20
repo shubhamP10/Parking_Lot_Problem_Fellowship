@@ -30,4 +30,8 @@ public class Owner implements IParkingObserver {
         lotNumber++;
         return key;
     }
+
+    public void updateUnParkedVehicle(String key) {
+        this.key = key;
+    }
 }

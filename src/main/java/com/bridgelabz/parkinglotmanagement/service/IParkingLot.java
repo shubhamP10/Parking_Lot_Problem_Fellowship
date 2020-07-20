@@ -8,7 +8,7 @@ public interface IParkingLot {
 
     void parkVehicle(Car car) throws ParkingLotException;
 
-    void unParkVehicle(Car car) throws ParkingLotException;
+    void unParkVehicle(String key) throws ParkingLotException;
 
     boolean isParked(Car car);
 
