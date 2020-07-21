@@ -5,10 +5,8 @@ import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 public class ParkingLot implements IParkingLot {
 
@@ -32,6 +30,7 @@ public class ParkingLot implements IParkingLot {
     public void parkVehicle(Car car) throws ParkingLotException {
         if (this.parkingMap.size() < PARKING_LOT_CAPACITY) {
             String key = attendant.parkVehicle(parkingMap);
+            car.setParkedTime(this.getCurrentTime());
             parkingMap.put(key, car);
         } else {
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
@@ -39,6 +38,17 @@ public class ParkingLot implements IParkingLot {
         if (this.parkingMap.size() == PARKING_LOT_CAPACITY) {
             this.notifyToObserver(Notifications.PARKING_LOT_IS_FULL.message);
         }
+    }
+
+    //Method To Get Current Timestamp
+    private Timestamp getCurrentTime() {
+        //Date object
+        Date date= new Date();
+        //getTime() returns current time in milliseconds
+        long time = date.getTime();
+        //Passed the milliseconds to constructor of Timestamp class
+        Timestamp timestamp = new Timestamp(time);
+        return timestamp;
     }
 
     /**

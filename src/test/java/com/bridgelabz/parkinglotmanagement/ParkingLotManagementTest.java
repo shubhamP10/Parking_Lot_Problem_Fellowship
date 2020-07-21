@@ -151,7 +151,9 @@ public class ParkingLotManagementTest {
     public void givenVehicleToPark_WhenBeforeUnParked_ShouldReturnBillAmount() throws ParkingLotException {
         parkingLot.addObserver(owner);
         Car firstCar = new Car("1", "KA-48-S-8055", 12.5);
+        Car secondCar = new Car("2", "KA-01-S-1234", 1);
         parkingLot.parkVehicle(firstCar);
+        parkingLot.parkVehicle(secondCar);
         double bill = parkingLot.generateBill(firstCar);
         Assert.assertEquals(125.0, bill, 0.0);
     }
