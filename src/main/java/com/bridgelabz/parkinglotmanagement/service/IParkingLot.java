@@ -10,7 +10,7 @@ public interface IParkingLot {
 
     void unParkVehicle(String key) throws ParkingLotException;
 
-    boolean isParked(Car car);
+    boolean isParked(String key);
 
     void notifyToObserver(String message);
 

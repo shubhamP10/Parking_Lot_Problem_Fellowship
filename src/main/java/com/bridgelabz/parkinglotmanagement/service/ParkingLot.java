@@ -5,7 +5,10 @@ import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ParkingLot implements IParkingLot {
 
@@ -48,7 +51,7 @@ public class ParkingLot implements IParkingLot {
     public void unParkVehicle(String key) throws ParkingLotException {
         if (key == null)
             throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
-        if (parkingMap.containsKey(key)){
+        if (parkingMap.containsKey(key)) {
             attendant.unParkVehicle(key);
             parkingMap.remove(key);
             notifyToObserver(Notifications.HAVE_SPACE_TO_PARK.message);
@@ -81,8 +84,8 @@ public class ParkingLot implements IParkingLot {
      * @return boolean value
      */
     @Override
-    public boolean isParked(Car car) {
-        return parkingMap.containsKey(car.getID());
+    public boolean isParked(String key) {
+        return parkingMap.containsKey(key);
     }
 
     @Override
