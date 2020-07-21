@@ -15,7 +15,11 @@ public class Car {
         this.hours = hours;
     }
 
-    public void setParkedTime(Timestamp time){
+    public Timestamp getParkedTime() {
+        return parkedTime;
+    }
+
+    public void setParkedTime(Timestamp time) {
         this.parkedTime = time;
     }
 

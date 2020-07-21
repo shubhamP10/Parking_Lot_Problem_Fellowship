@@ -15,7 +15,7 @@ public class ParkingLotException extends Exception {
 
         String message;
 
-        ExceptionType(String message){
+        ExceptionType(String message) {
             this.message = message;
         }
     }

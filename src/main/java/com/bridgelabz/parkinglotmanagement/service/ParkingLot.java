@@ -41,14 +41,13 @@ public class ParkingLot implements IParkingLot {
     }
 
     //Method To Get Current Timestamp
-    private Timestamp getCurrentTime() {
+    public Timestamp getCurrentTime() {
         //Date object
-        Date date= new Date();
+        Date date = new Date();
         //getTime() returns current time in milliseconds
         long time = date.getTime();
         //Passed the milliseconds to constructor of Timestamp class
-        Timestamp timestamp = new Timestamp(time);
-        return timestamp;
+        return new Timestamp(time);
     }
 
     /**

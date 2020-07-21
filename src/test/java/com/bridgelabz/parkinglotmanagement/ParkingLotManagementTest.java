@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Timestamp;
+
 public class ParkingLotManagementTest {
 
     ParkingLot parkingLot = null;
@@ -156,5 +158,14 @@ public class ParkingLotManagementTest {
         parkingLot.parkVehicle(secondCar);
         double bill = parkingLot.generateBill(firstCar);
         Assert.assertEquals(125.0, bill, 0.0);
+    }
+
+    @Test
+    public void givenVehicleToPark_WhenParked_ShouldReturnParkedTime() throws ParkingLotException {
+        parkingLot.addObserver(owner);
+        Car firstCar = new Car("1", "KA-48-S-8055", 0.0);
+        parkingLot.parkVehicle(firstCar);
+        Timestamp parkedTime = firstCar.getParkedTime();
+        System.out.println(parkedTime);
     }
 }
