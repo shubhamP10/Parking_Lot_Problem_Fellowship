@@ -9,6 +9,7 @@ import java.util.*;
 
 public class ParkingLot implements IParkingLot {
 
+    final double COST_PER_HOUR = 10.0;
     private final int PARKING_LOT_CAPACITY;
     private final List<IParkingObserver> observers = new ArrayList<>();
     private final Map<String, Car> parkingMap = new HashMap<>();
@@ -91,5 +92,9 @@ public class ParkingLot implements IParkingLot {
                 return key;
         }
         return null;
+    }
+
+    public double generateBill(Car car) {
+        return car.getHours() * COST_PER_HOUR;
     }
 }
