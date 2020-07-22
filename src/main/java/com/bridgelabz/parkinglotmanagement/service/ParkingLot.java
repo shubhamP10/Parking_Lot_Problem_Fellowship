@@ -10,7 +10,6 @@ import java.util.*;
 
 public class ParkingLot implements IParkingLot {
 
-    final double COST_PER_HOUR = 10.0;
     private final int PARKING_LOT_CAPACITY;
     private final List<IParkingObserver> observers = new ArrayList<>();
     private final Map<String, Car> parkingMap = new HashMap<>();
@@ -29,9 +28,9 @@ public class ParkingLot implements IParkingLot {
     @Override
     public void parkVehicle(Car car) throws ParkingLotException {
         if (this.parkingMap.size() < PARKING_LOT_CAPACITY) {
-            String key = attendant.parkVehicle(parkingMap);
+            String lotNumber = attendant.parkVehicle(parkingMap);
             car.setParkedTime(this.getCurrentTime());
-            parkingMap.put(key, car);
+            parkingMap.put(lotNumber, car);
         } else {
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         }
@@ -61,7 +60,6 @@ public class ParkingLot implements IParkingLot {
         if (key == null)
             throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         if (parkingMap.containsKey(key)) {
-            attendant.unParkVehicle(key);
             parkingMap.remove(key);
             notifyToObserver(Notifications.HAVE_SPACE_TO_PARK.message);
         }
@@ -104,9 +102,5 @@ public class ParkingLot implements IParkingLot {
                 return key;
         }
         return null;
-    }
-
-    public double generateBill(Car car) {
-        return car.getHours() * COST_PER_HOUR;
     }
 }

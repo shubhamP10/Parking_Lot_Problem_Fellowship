@@ -1,6 +1,6 @@
 package com.bridgelabz.parkinglotmanagement.exception;
 
-public class ParkingLotException extends Exception {
+public class ParkingLotException extends RuntimeException {
 
     public ExceptionType type;
 

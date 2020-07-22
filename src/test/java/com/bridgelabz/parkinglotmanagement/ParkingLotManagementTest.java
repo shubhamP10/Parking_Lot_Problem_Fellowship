@@ -27,29 +27,29 @@ public class ParkingLotManagementTest {
 
     //    UC1
     @Test
-    public void givenVehicle_WhenPark_ShouldReturnTrue() throws ParkingLotException {
-        Car car = new Car("1", "KA-48-S-8055", 1);
+    public void givenVehicle_WhenPark_ShouldReturnTrue() {
+        Car car = new Car("KA-48-S-8055");
         parkingLot.parkVehicle(car);
-        String key = parkingLot.getVehicle(car);
-        boolean isParked = parkingLot.isParked(key);
+        String lotNumber = parkingLot.getVehicle(car);
+        boolean isParked = parkingLot.isParked(lotNumber);
         Assert.assertTrue(isParked);
     }
 
     //    UC2
     @Test
-    public void givenVehicleIfParked_WhenUnParked_ShouldReturnFalse() throws ParkingLotException {
-        Car car = new Car("1", "KA-48-S-8055", 1);
+    public void givenVehicleIfParked_WhenUnParked_ShouldReturnFalse() {
+        Car car = new Car("KA-48-S-8055");
         parkingLot.parkVehicle(car);
-        String key = parkingLot.getVehicle(car);
-        parkingLot.unParkVehicle(key);
-        boolean isParked = parkingLot.isParked(key);
+        String lotNumber = parkingLot.getVehicle(car);
+        parkingLot.unParkVehicle(lotNumber);
+        boolean isParked = parkingLot.isParked(lotNumber);
         Assert.assertFalse(isParked);
     }
 
     @Test
     public void givenVehicleToUnPark_WhenNull_ShouldThrowException() {
         try {
-            Car car = new Car("1", "KA-48-S-8055", 1);
+            Car car = new Car("KA-48-S-8055");
             parkingLot.parkVehicle(car);
             parkingLot.unParkVehicle(null);
         } catch (ParkingLotException e) {
@@ -59,10 +59,10 @@ public class ParkingLotManagementTest {
 
     //    UC3
     @Test
-    public void givenVehicleToPark_WhenOwner_ShouldInformFull() throws ParkingLotException {
+    public void givenVehicleToPark_WhenOwner_ShouldInformFull() {
         parkingLot.addObserver(owner);
-        Car firstCar = new Car("1", "KA-48-S-8055", 1);
-        Car secondCar = new Car("2", "KA-01-S-1234", 1);
+        Car firstCar = new Car("KA-48-S-8055");
+        Car secondCar = new Car("KA-01-S-1234");
         parkingLot.parkVehicle(firstCar);
         parkingLot.parkVehicle(secondCar);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.getMessage());
@@ -70,11 +70,11 @@ public class ParkingLotManagementTest {
 
     //    UC4
     @Test
-    public void givenVehicleToPark_WhenOwnerAndSecurity_ShouldInformLotFull() throws ParkingLotException {
+    public void givenVehicleToPark_WhenOwnerAndSecurity_ShouldInformLotFull() {
         parkingLot.addObserver(owner);
         parkingLot.addObserver(security);
-        Car firstCar = new Car("1", "KA-48-S-8055", 1);
-        Car secondCar = new Car("2", "KA-01-S-1234", 1);
+        Car firstCar = new Car("KA-48-S-8055");
+        Car secondCar = new Car("KA-01-S-1234");
         parkingLot.parkVehicle(firstCar);
         parkingLot.parkVehicle(secondCar);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.getMessage());
@@ -85,9 +85,9 @@ public class ParkingLotManagementTest {
     public void givenVehicleToPark_WhenMoreNumberOfVehicles_ShouldThrowException() {
         try {
             parkingLot.addObserver(owner);
-            Car firstCar = new Car("1", "KA-48-S-8055", 1);
-            Car secondCar = new Car("2", "KA-01-S-1234", 1);
-            Car thirdCar = new Car("3", "KA-02-S-1234", 1);
+            Car firstCar = new Car("KA-48-S-8055");
+            Car secondCar = new Car("KA-01-S-1234");
+            Car thirdCar = new Car("KA-02-S-1234");
             parkingLot.parkVehicle(firstCar);
             parkingLot.parkVehicle(secondCar);
             parkingLot.parkVehicle(thirdCar);
@@ -99,8 +99,8 @@ public class ParkingLotManagementTest {
     @Test
     public void givenVehicleToUnPark_WhenWrongVehicle_ShouldThrowException() {
         try {
-            Car firstCar = new Car("1", "KA-48-S-8055", 1);
-            Car secondCar = new Car("2", "KA-01-S-8055", 1);
+            Car firstCar = new Car("KA-48-S-8055");
+            Car secondCar = new Car("KA-01-S-8055");
             parkingLot.parkVehicle(firstCar);
             String key = parkingLot.getVehicle(secondCar);
             parkingLot.unParkVehicle(key);
@@ -111,26 +111,26 @@ public class ParkingLotManagementTest {
 
     //    UC5
     @Test
-    public void givenVehicleToPark_WhenHavingSpaceAfterUnPark_ShouldInformHaveSpaceToPark() throws ParkingLotException {
+    public void givenVehicleToPark_WhenHavingSpaceAfterUnPark_ShouldInformHaveSpaceToPark() {
         parkingLot.addObserver(owner);
         parkingLot.addObserver(security);
-        Car car = new Car("1", "KA-48-S-8055", 1);
-        Car car2 = new Car("2", "KA-01-S-1234", 1);
+        Car car = new Car("KA-48-S-8055");
+        Car car2 = new Car("KA-01-S-1234");
         parkingLot.parkVehicle(car);
         parkingLot.parkVehicle(car2);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.getMessage());
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, security.getMessage());
-        String key = parkingLot.getVehicle(car2);
-        parkingLot.unParkVehicle(key);
+        String lotNumber = parkingLot.getVehicle(car2);
+        parkingLot.unParkVehicle(lotNumber);
         Assert.assertEquals(Notifications.HAVE_SPACE_TO_PARK.message, owner.getMessage());
     }
 
     @Test
     public void givenVehicleToUnPark_WhenParkingLotIsEmpty_ShouldThrowException() {
         try {
-            Car car = new Car("1", "KA-48-S-8055", 1);
-            String key = parkingLot.getVehicle(car);
-            parkingLot.unParkVehicle(key);
+            Car car = new Car("KA-48-S-8055");
+            String lotNumber = parkingLot.getVehicle(car);
+            parkingLot.unParkVehicle(lotNumber);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
         }
@@ -138,32 +138,22 @@ public class ParkingLotManagementTest {
 
     //    UC7
     @Test
-    public void givenVehicleToUnPark_WhenFindVehicle_ShouldReturnKey() throws ParkingLotException {
+    public void givenVehicleToUnPark_WhenFindVehicle_ShouldReturnKey() {
         parkingLot.addObserver(owner);
-        Car firstCar = new Car("1", "KA-48-S-8055", 1);
-        Car secondCar = new Car("2", "KA-01-S-1234", 1);
+        Car firstCar = new Car("KA-48-S-8055");
+        Car secondCar = new Car("KA-01-S-1234");
         parkingLot.parkVehicle(firstCar);
         parkingLot.parkVehicle(secondCar);
-        String key = parkingLot.getVehicle(secondCar);
-        parkingLot.unParkVehicle(key);
-        Assert.assertFalse(parkingLot.isParked(key));
+        String lotNumber = parkingLot.getVehicle(secondCar);
+        parkingLot.unParkVehicle(lotNumber);
+        Assert.assertFalse(parkingLot.isParked(lotNumber));
     }
 
+    //    UC8
     @Test
-    public void givenVehicleToPark_WhenBeforeUnParked_ShouldReturnBillAmount() throws ParkingLotException {
+    public void givenVehicleToPark_WhenParked_ShouldReturnParkedTime() {
         parkingLot.addObserver(owner);
-        Car firstCar = new Car("1", "KA-48-S-8055", 12.5);
-        Car secondCar = new Car("2", "KA-01-S-1234", 1);
-        parkingLot.parkVehicle(firstCar);
-        parkingLot.parkVehicle(secondCar);
-        double bill = parkingLot.generateBill(firstCar);
-        Assert.assertEquals(125.0, bill, 0.0);
-    }
-
-    @Test
-    public void givenVehicleToPark_WhenParked_ShouldReturnParkedTime() throws ParkingLotException {
-        parkingLot.addObserver(owner);
-        Car firstCar = new Car("1", "KA-48-S-8055", 0.0);
+        Car firstCar = new Car("KA-48-S-8055");
         parkingLot.parkVehicle(firstCar);
         Timestamp parkedTime = firstCar.getParkedTime();
         System.out.println(parkedTime);
