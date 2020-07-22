@@ -2,7 +2,5 @@ package com.bridgelabz.parkinglotmanagement.observer;
 
 public interface IParkingObserver {
 
-    void updateMessage(String message);
-
-    String getMessage();
+    void sendParkingStatus(int totalCarsParked, int parkingLotCapacity);
 }
