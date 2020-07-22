@@ -11,7 +11,7 @@ import java.util.*;
 public class ParkingLot implements IParkingLot {
 
     private final int PARKING_LOT_CAPACITY;
-    private final List<IParkingObserver> observers = new ArrayList<>();
+    private final List<IParkingObserver> observersList = new ArrayList<>();
     private final Map<String, Car> parkingMap = new HashMap<>();
     Attendant attendant = new Attendant();
 
@@ -68,11 +68,11 @@ public class ParkingLot implements IParkingLot {
     /**
      * Method To Add Observers
      *
-     * @param observer Interface
+     * @param observers Interface
      */
     @Override
-    public void addObserver(IParkingObserver observer) {
-        this.observers.add(observer);
+    public void addObserver(IParkingObserver... observers) {
+        Collections.addAll(observersList, observers);
     }
 
     /**
@@ -80,9 +80,7 @@ public class ParkingLot implements IParkingLot {
      */
     @Override
     public void notifyToObserver(String message) {
-        for (IParkingObserver observer : observers) {
-            observer.updateMessage(message);
-        }
+        observersList.forEach(observer -> observer.updateMessage(message));
     }
 
     /**
@@ -97,10 +95,6 @@ public class ParkingLot implements IParkingLot {
 
     @Override
     public String getVehicle(Car car) {
-        for (String key : parkingMap.keySet()) {
-            if (parkingMap.get(key) == car)
-                return key;
-        }
-        return null;
+        return parkingMap.keySet().stream().filter(key -> parkingMap.get(key) == car).findFirst().orElse(null);
     }
 }

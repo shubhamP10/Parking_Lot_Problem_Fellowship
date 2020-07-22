@@ -71,8 +71,7 @@ public class ParkingLotManagementTest {
     //    UC4
     @Test
     public void givenVehicleToPark_WhenOwnerAndSecurity_ShouldInformLotFull() {
-        parkingLot.addObserver(owner);
-        parkingLot.addObserver(security);
+        parkingLot.addObserver(owner, security);
         Car firstCar = new Car("KA-48-S-8055");
         Car secondCar = new Car("KA-01-S-1234");
         parkingLot.parkVehicle(firstCar);
@@ -112,8 +111,7 @@ public class ParkingLotManagementTest {
     //    UC5
     @Test
     public void givenVehicleToPark_WhenHavingSpaceAfterUnPark_ShouldInformHaveSpaceToPark() {
-        parkingLot.addObserver(owner);
-        parkingLot.addObserver(security);
+        parkingLot.addObserver(owner, security);
         Car car = new Car("KA-48-S-8055");
         Car car2 = new Car("KA-01-S-1234");
         parkingLot.parkVehicle(car);

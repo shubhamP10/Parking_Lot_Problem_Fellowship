@@ -14,7 +14,7 @@ public interface IParkingLot {
 
     void notifyToObserver(String message);
 
-    void addObserver(IParkingObserver monitor);
+    void addObserver(IParkingObserver... observers);
 
     String getVehicle(Car car);
 }
