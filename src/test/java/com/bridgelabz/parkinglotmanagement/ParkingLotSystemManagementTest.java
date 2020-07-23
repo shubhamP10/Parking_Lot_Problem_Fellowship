@@ -179,4 +179,18 @@ public class ParkingLotSystemManagementTest {
         Timestamp parkedTime = parkingLotSystem.getParkedTime(firstCar);
         System.out.println(parkedTime);
     }
+
+    @Test
+    public void givenVehiclesToPark_WhenParked_ShouldReturnCountOfTotalCarsParked() {
+        Car firstCar = new Car("KA-48-S-8055");
+        Car secondCar = new Car("KA-01-S-1234");
+        Car thirdCar = new Car("KA-02-S-1234");
+        Car forthCar = new Car("KA-02-S-1234");
+        parkingLotSystem.parkVehicle(firstCar);
+        parkingLotSystem.parkVehicle(secondCar);
+        parkingLotSystem.parkVehicle(thirdCar);
+        parkingLotSystem.parkVehicle(forthCar);
+        int count = parkingLotSystem.getCountOfVehiclesParked();
+        Assert.assertEquals(4,count);
+    }
 }

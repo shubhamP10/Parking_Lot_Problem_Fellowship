@@ -71,4 +71,8 @@ public class ParkingLotSystem {
                 .map(Slot::getParkedTime)
                 .orElse(null);
     }
+
+    public int getCountOfVehiclesParked() {
+        return parkingMap.size();
+    }
 }
