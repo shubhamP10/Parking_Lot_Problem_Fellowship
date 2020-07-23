@@ -2,6 +2,7 @@ package com.bridgelabz.parkinglotmanagement.service;
 
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
+import com.bridgelabz.parkinglotmanagement.model.ParkingLot;
 import com.bridgelabz.parkinglotmanagement.model.Slot;
 import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
@@ -9,7 +10,6 @@ import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
 
@@ -84,7 +84,12 @@ public class ParkingLotSystem {
     }
 
     public long getCarCountForEachLot(int lotId){
-        long count = parkingMap.keySet().stream().filter(slot -> slot.lot.getLotId() == lotId).count();
-        return count;
+        return parkingMap.keySet().stream().filter(slot -> slot.lot.getLotId() == lotId).count();
+    }
+
+
+    public String findCar(Car car) {
+        Slot slot = this.parkingMap.keySet().stream().filter(slot1 -> parkingMap.get(slot1).equals(car)).findFirst().get();
+        return String.format("Parking Lot : %d  Slot Number : %d",slot.getLotId(), slot.getSlotId());
     }
 }

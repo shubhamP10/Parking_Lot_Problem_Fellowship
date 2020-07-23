@@ -30,4 +30,8 @@ public class Slot {
     public void setLot(ParkingLot lot) {
         this.lot = lot;
     }
+
+    public int getLotId(){
+        return lot.getLotId();
+    }
 }

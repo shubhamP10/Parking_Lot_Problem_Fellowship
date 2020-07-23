@@ -218,4 +218,16 @@ public class ParkingLotSystemManagementTest {
         long count = parkingLotSystem.getCarCountForEachLot(1);
         System.out.println(count);
     }
+
+    @Test
+    public void givenVehiclePark_WhenAskedToGetLocation_ShouldReturnLocationOfVehicle() {
+        Car firstCar = new Car("KA-48-S-8055");
+        Car secondCar = new Car("KA-01-S-1234");
+        Car thirdCar = new Car("KA-02-S-1234");
+        parkingLotSystem.parkVehicle(firstCar);
+        parkingLotSystem.parkVehicle(secondCar);
+        parkingLotSystem.parkVehicle(thirdCar);
+        String carLocation = parkingLotSystem.findCar(thirdCar);
+        Assert.assertEquals("Parking Lot : 1  Slot Number : 3", carLocation);
+    }
 }
