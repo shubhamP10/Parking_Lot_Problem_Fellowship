@@ -31,6 +31,12 @@ public class ParkingLotSystem {
      * @throws ParkingLotException LOT FULL
      */
     public void parkVehicle(Car car) throws ParkingLotException {
+        parkingMap.keySet()
+                .stream()
+                .filter(slot -> parkingMap.get(slot).equals(car))
+                .forEach(slot -> {
+                    throw new ParkingLotException(ParkingLotException.ExceptionType.DUPLICATE_VEHICLE);
+                });
         parkingMap = attendant.park(car);
     }
 

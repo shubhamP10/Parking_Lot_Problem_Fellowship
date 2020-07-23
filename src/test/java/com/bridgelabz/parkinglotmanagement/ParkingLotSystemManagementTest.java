@@ -193,4 +193,20 @@ public class ParkingLotSystemManagementTest {
         int count = parkingLotSystem.getCountOfVehiclesParked();
         Assert.assertEquals(4,count);
     }
+
+    @Test
+    public void givenVehiclesToPark_WhenSameVehicle_ShouldThrowException() {
+        try {
+            Car firstCar = new Car("KA-48-S-8055");
+            Car secondCar = new Car("KA-01-S-1234");
+            parkingLotSystem.parkVehicle(firstCar);
+            parkingLotSystem.parkVehicle(secondCar);
+            parkingLotSystem.parkVehicle(firstCar);
+            int count = parkingLotSystem.getCountOfVehiclesParked();
+            Assert.assertEquals(4,count);
+        } catch (ParkingLotException e){
+            Assert.assertEquals(ParkingLotException.ExceptionType.DUPLICATE_VEHICLE,e.type);
+        }
+
+    }
 }
