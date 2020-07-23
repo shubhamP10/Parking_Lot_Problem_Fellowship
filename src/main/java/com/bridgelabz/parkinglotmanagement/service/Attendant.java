@@ -7,6 +7,7 @@ import com.bridgelabz.parkinglotmanagement.model.Slot;
 import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 
@@ -34,7 +35,7 @@ public class Attendant implements IParkingLot {
     public Map<Slot, Car> park(Car car) {
         if (parkingMap.size() > this.parkingLotCapacity)
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
-        Slot slot = new Slot();
+        Slot slot = new Slot(ParkingLotUtility.getCurrentTime());
         slotCounter += 1;
         slot.setSlotId(slotCounter);
         ParkingLot parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));

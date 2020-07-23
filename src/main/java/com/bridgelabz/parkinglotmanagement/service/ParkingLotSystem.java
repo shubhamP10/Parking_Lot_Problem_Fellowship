@@ -7,17 +7,15 @@ import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ParkingLotSystem {
 
-    private Map<Slot, Car> parkingMap;
-    Attendant attendant;
-
     public int numberOfSlotsPerLot;
+    Attendant attendant;
     ParkingLotUtility parkingLotUtility;
+    private Map<Slot, Car> parkingMap;
 
     public ParkingLotSystem(int parkingLotCapacity, int numberOfParkingLots) {
         this.parkingLotUtility = new ParkingLotUtility(parkingLotCapacity, numberOfParkingLots);
@@ -34,16 +32,6 @@ public class ParkingLotSystem {
      */
     public void parkVehicle(Car car) throws ParkingLotException {
         parkingMap = attendant.park(car);
-    }
-
-    //Method To Get Current Timestamp
-    public Timestamp getCurrentTime() {
-        //Date object
-        Date date = new Date();
-        //getTime() returns current time in milliseconds
-        long time = date.getTime();
-        //Passed the milliseconds to constructor of Timestamp class
-        return new Timestamp(time);
     }
 
     /**
@@ -73,5 +61,14 @@ public class ParkingLotSystem {
      */
     public boolean isParked(Car car) {
         return parkingMap.containsValue(car);
+    }
+
+    public Timestamp getParkedTime(Car car) {
+        return parkingMap.keySet()
+                .stream()
+                .filter(slot -> parkingMap.get(slot).equals(car))
+                .findFirst()
+                .map(Slot::getParkedTime)
+                .orElse(null);
     }
 }

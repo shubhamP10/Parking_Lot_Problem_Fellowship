@@ -1,12 +1,15 @@
 package com.bridgelabz.parkinglotmanagement.utility;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class ParkingLotUtility {
     public int parkingLotCapacity;
     public static int lotNumber = 0;
     public static int numberOfParkingLots = 0;
 
     public ParkingLotUtility(int parkingLotCapacity, int numberOfParkingLots) {
-        this.numberOfParkingLots = numberOfParkingLots;
+        ParkingLotUtility.numberOfParkingLots = numberOfParkingLots;
         this.parkingLotCapacity = parkingLotCapacity;
     }
 
@@ -26,4 +29,15 @@ public class ParkingLotUtility {
     public int getNumberOfSlotsPerLot() {
         return parkingLotCapacity / numberOfParkingLots;
     }
+
+    //Method To Get Current Timestamp
+    public static Timestamp getCurrentTime() {
+        //Date object
+        Date date = new Date();
+        //getTime() returns current time in milliseconds
+        long time = date.getTime();
+        //Passed the milliseconds to constructor of Timestamp class
+        return new Timestamp(time);
+    }
+
 }

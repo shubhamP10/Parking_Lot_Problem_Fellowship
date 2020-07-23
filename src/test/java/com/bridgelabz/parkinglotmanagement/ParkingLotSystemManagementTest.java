@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Timestamp;
+
 public class ParkingLotSystemManagementTest {
 
     ParkingLotSystem parkingLotSystem = null;
@@ -152,12 +154,12 @@ public class ParkingLotSystemManagementTest {
     }
 
     //    UC8
-//    @Test
-//    public void givenVehicleToPark_WhenParked_ShouldReturnParkedTime() {
-//        parkingLotSystem.addObserver(owner);
-//        Car firstCar = new Car("KA-48-S-8055");
-//        parkingLotSystem.parkVehicle(firstCar);
-//        Timestamp parkedTime = firstCar.getParkedTime();
-//        System.out.println(parkedTime);
-//    }
+    @Test
+    public void givenVehicleToPark_WhenParked_ShouldReturnParkedTime() {
+        parkingLotSystem.addObserver(owner);
+        Car firstCar = new Car("KA-48-S-8055");
+        parkingLotSystem.parkVehicle(firstCar);
+        Timestamp parkedTime = parkingLotSystem.getParkedTime(firstCar);
+        System.out.println(parkedTime);
+    }
 }
