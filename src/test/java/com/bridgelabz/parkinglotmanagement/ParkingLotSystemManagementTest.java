@@ -153,6 +153,23 @@ public class ParkingLotSystemManagementTest {
         Assert.assertFalse(parkingLotSystem.isParked(secondCar));
     }
 
+    @Test
+    public void givenVehicle_WhenParkedAtEveryLot_ShouldInformLotFull() {
+        parkingLotSystem = new ParkingLotSystem(4, 4);
+        parkingLotSystem.addObserver(owner);
+        Car firstCar = new Car("KA-48-S-8055");
+        Car secondCar = new Car("KA-01-S-1234");
+        Car thirdCar = new Car("KA-02-S-1234");
+        Car forthCar = new Car("KA-02-S-1234");
+        parkingLotSystem.parkVehicle(firstCar);
+        parkingLotSystem.parkVehicle(secondCar);
+        parkingLotSystem.parkVehicle(thirdCar);
+        parkingLotSystem.parkVehicle(forthCar);
+        Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.message);
+        parkingLotSystem.unParkVehicle(secondCar);
+        Assert.assertEquals(Notifications.HAVE_SPACE_TO_PARK.message, owner.message);
+    }
+
     //    UC8
     @Test
     public void givenVehicleToPark_WhenParked_ShouldReturnParkedTime() {
