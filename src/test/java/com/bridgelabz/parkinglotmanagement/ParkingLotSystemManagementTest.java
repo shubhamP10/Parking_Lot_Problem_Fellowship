@@ -155,7 +155,7 @@ public class ParkingLotSystemManagementTest {
 
     @Test
     public void givenVehicle_WhenParkedAtEveryLot_ShouldInformLotFull() {
-        parkingLotSystem = new ParkingLotSystem(4, 4);
+        parkingLotSystem = new ParkingLotSystem(4, 2);
         parkingLotSystem.addObserver(owner);
         Car firstCar = new Car("KA-48-S-8055");
         Car secondCar = new Car("KA-01-S-1234");
@@ -202,11 +202,20 @@ public class ParkingLotSystemManagementTest {
             parkingLotSystem.parkVehicle(firstCar);
             parkingLotSystem.parkVehicle(secondCar);
             parkingLotSystem.parkVehicle(firstCar);
-            int count = parkingLotSystem.getCountOfVehiclesParked();
-            Assert.assertEquals(4,count);
         } catch (ParkingLotException e){
             Assert.assertEquals(ParkingLotException.ExceptionType.DUPLICATE_VEHICLE,e.type);
         }
+    }
 
+    @Test
+    public void givenVehicleToPark_WhenParked_ShouldReturnCountOfParticularLot() {
+        Car firstCar = new Car("KA-48-S-8055");
+        Car secondCar = new Car("KA-01-S-1234");
+        Car thirdCar = new Car("KA-02-S-1234");
+        parkingLotSystem.parkVehicle(firstCar);
+        parkingLotSystem.parkVehicle(secondCar);
+        parkingLotSystem.parkVehicle(thirdCar);
+        long count = parkingLotSystem.getCarCountForEachLot(1);
+        System.out.println(count);
     }
 }

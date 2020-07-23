@@ -36,7 +36,7 @@ public class Attendant implements IParkingLot {
         if (parkingMap.size() > this.parkingLotCapacity)
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         Slot slot = new Slot(ParkingLotUtility.getCurrentTime());
-        slotCounter += 1;
+        slotCounter++;
         slot.setSlotId(slotCounter);
         ParkingLot parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));
         slot.setLot(parkingLot);

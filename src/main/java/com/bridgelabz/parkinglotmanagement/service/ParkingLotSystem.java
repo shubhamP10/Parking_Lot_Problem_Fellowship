@@ -9,6 +9,7 @@ import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
 
@@ -80,5 +81,10 @@ public class ParkingLotSystem {
 
     public int getCountOfVehiclesParked() {
         return parkingMap.size();
+    }
+
+    public long getCarCountForEachLot(int lotId){
+        long count = parkingMap.keySet().stream().filter(slot -> slot.lot.getLotId() == lotId).count();
+        return count;
     }
 }
