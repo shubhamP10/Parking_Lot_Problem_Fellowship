@@ -216,7 +216,7 @@ public class ParkingLotSystemManagementTest {
         parkingLotSystem.parkVehicle(secondCar);
         parkingLotSystem.parkVehicle(thirdCar);
         long count = parkingLotSystem.getCarCountForEachLot(1);
-        System.out.println(count);
+        Assert.assertEquals(2,count);
     }
 
     @Test
