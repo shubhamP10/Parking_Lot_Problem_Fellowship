@@ -10,8 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Timestamp;
-
 public class ParkingLotSystemManagementTest {
 
     ParkingLotSystem parkingLotSystem = null;
@@ -20,7 +18,7 @@ public class ParkingLotSystemManagementTest {
 
     @Before
     public void setUp() {
-        parkingLotSystem = new ParkingLotSystem(4,2);
+        parkingLotSystem = new ParkingLotSystem(4, 2);
         owner = new Owner();
         security = new AirportSecurity();
     }
@@ -36,7 +34,7 @@ public class ParkingLotSystemManagementTest {
 
     //    UC2
     @Test
-    public void givenVehicleIfParked_WhenUnParked_ShouldReturnFalse() {
+    public void givenVehicleToPark_WhenUnParked_ShouldReturnFalse() {
         Car car = new Car("KA-48-S-8055");
         parkingLotSystem.parkVehicle(car);
         parkingLotSystem.unParkVehicle(car);
@@ -61,8 +59,12 @@ public class ParkingLotSystemManagementTest {
         parkingLotSystem.addObserver(owner);
         Car firstCar = new Car("KA-48-S-8055");
         Car secondCar = new Car("KA-01-S-1234");
+        Car thirdCar = new Car("KA-01-S-1234");
+        Car forthCar = new Car("KA-01-S-1234");
         parkingLotSystem.parkVehicle(firstCar);
         parkingLotSystem.parkVehicle(secondCar);
+        parkingLotSystem.parkVehicle(thirdCar);
+        parkingLotSystem.parkVehicle(forthCar);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.message);
     }
 
@@ -85,13 +87,16 @@ public class ParkingLotSystemManagementTest {
     @Test
     public void givenVehicleToPark_WhenMoreNumberOfVehicles_ShouldThrowException() {
         try {
+            parkingLotSystem = new ParkingLotSystem(2, 2);
             parkingLotSystem.addObserver(owner);
             Car firstCar = new Car("KA-48-S-8055");
             Car secondCar = new Car("KA-01-S-1234");
             Car thirdCar = new Car("KA-02-S-1234");
+            Car forthCar = new Car("KA-02-S-1234");
             parkingLotSystem.parkVehicle(firstCar);
             parkingLotSystem.parkVehicle(secondCar);
             parkingLotSystem.parkVehicle(thirdCar);
+            parkingLotSystem.parkVehicle(forthCar);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.LOT_FULL, e.type);
         }
@@ -112,6 +117,7 @@ public class ParkingLotSystemManagementTest {
     //    UC5
     @Test
     public void givenVehicleToPark_WhenHavingSpaceAfterUnPark_ShouldInformHaveSpaceToPark() {
+        parkingLotSystem = new ParkingLotSystem(2, 2);
         parkingLotSystem.addObserver(owner, security);
         Car car = new Car("KA-48-S-8055");
         Car car2 = new Car("KA-01-S-1234");
@@ -133,9 +139,9 @@ public class ParkingLotSystemManagementTest {
         }
     }
 
-    //    UC7
     @Test
-    public void givenVehicleToUnPark_WhenFindVehicle_ShouldReturnKey() {
+    public void givenVehicleToUnPark_WhenNotFoundVehicle_ShouldReturnFalse() {
+        parkingLotSystem = new ParkingLotSystem(4, 2);
         parkingLotSystem.addObserver(owner);
         Car firstCar = new Car("KA-48-S-8055");
         Car secondCar = new Car("KA-01-S-1234");
@@ -146,12 +152,12 @@ public class ParkingLotSystemManagementTest {
     }
 
     //    UC8
-    @Test
-    public void givenVehicleToPark_WhenParked_ShouldReturnParkedTime() {
-        parkingLotSystem.addObserver(owner);
-        Car firstCar = new Car("KA-48-S-8055");
-        parkingLotSystem.parkVehicle(firstCar);
-        Timestamp parkedTime = firstCar.getParkedTime();
-        System.out.println(parkedTime);
-    }
+//    @Test
+//    public void givenVehicleToPark_WhenParked_ShouldReturnParkedTime() {
+//        parkingLotSystem.addObserver(owner);
+//        Car firstCar = new Car("KA-48-S-8055");
+//        parkingLotSystem.parkVehicle(firstCar);
+//        Timestamp parkedTime = firstCar.getParkedTime();
+//        System.out.println(parkedTime);
+//    }
 }

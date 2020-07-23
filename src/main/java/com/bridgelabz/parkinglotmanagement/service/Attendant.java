@@ -10,14 +10,14 @@ import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 import java.util.*;
 
 
-public class Attendant implements IParkingLot{
+public class Attendant implements IParkingLot {
     private final List<IParkingObserver> observersList;
     private final Map<Slot, Car> parkingMap;
     public int parkingLotCapacity;
     public int numberOfParkingLots;
     public int numberOfSlotsPerLot;
     public int slotCounter = 0;
-
+    Slot removeSlot = new Slot();
 
     public Attendant(int parkingLotCapacity, int numberOfParkingLots, int numberOfSlotsPerLot) {
         this.parkingLotCapacity = parkingLotCapacity;
@@ -48,20 +48,19 @@ public class Attendant implements IParkingLot{
         if (!parkingMap.containsValue(car))
             throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         Set<Slot> slots = parkingMap.keySet();
-        for (Slot slot : slots) {
-            if (parkingMap.get(slot).equals(car)) {
-                parkingMap.remove(slot);
-                this.notifyToObserver(parkingMap.size());
-            }
-        }
+
+        slots.stream()
+                .filter(slot -> parkingMap.get(slot).equals(car))
+                .forEachOrdered(slot -> removeSlot = slot);
+
+        parkingMap.remove(removeSlot); // To Avoid ConcurrentModificationException
+        this.notifyToObserver(parkingMap.size());
         return parkingMap;
     }
 
     @Override
     public void notifyToObserver(int totalCarsParked) {
-        for (IParkingObserver observer: observersList){
-            observer.sendParkingStatus(totalCarsParked, this.parkingLotCapacity);
-        }
+        observersList.forEach(observer -> observer.sendParkingStatus(totalCarsParked, this.parkingLotCapacity));
     }
 
 
