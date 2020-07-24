@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class ParkingLotSystemManagementTest {
 
@@ -248,6 +249,20 @@ public class ParkingLotSystemManagementTest {
         parkingLotSystem.parkVehicle(thirdCar, DriverType.NORMAL_DRIVER);
         parkingLotSystem.unParkVehicle(thirdCar);
         parkingLotSystem.parkVehicle(forthCar, DriverType.HANDICAP_DRIVER);
-        System.out.println(parkingLotSystem.findCar(forthCar));
+        Assert.assertEquals("Parking Lot : 1  Slot Number : 3",parkingLotSystem.findCar(forthCar));
+    }
+
+    @Test
+    public void givenVehicleToPark_WhenAskedToGetParkedVehicles_ShouldReturnList() {
+        Car firstCar = new Car("KA-48-S-8055");
+        Car secondCar = new Car("KA-01-S-1234");
+        Car thirdCar = new Car("KA-02-S-1234");
+        Car forthCar = new Car("KA-02-S-1234");
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(secondCar,DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(thirdCar, DriverType.HANDICAP_DRIVER);
+        parkingLotSystem.parkVehicle(forthCar, DriverType.NORMAL_DRIVER);
+        List<Integer> parkedSlots = parkingLotSystem.getParkedSlots();
+        System.out.println(parkedSlots);
     }
 }

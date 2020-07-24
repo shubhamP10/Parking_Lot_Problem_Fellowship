@@ -50,7 +50,12 @@ public class Attendant implements IParkingLot {
                 break;
             case HANDICAP_DRIVER:
                 unParkedSlots.sort(Comparator.comparing(Integer::intValue));
-                slot.setSlotId(unParkedSlots.get(0));
+                if (unParkedSlots.size() != 0)
+                    slot.setSlotId(unParkedSlots.get(0));
+                else {
+                    slotCounter++;
+                    slot.setSlotId(slotCounter);
+                }
                 parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));
                 slot.setLot(parkingLot);
                 parkingMap.put(slot, car);

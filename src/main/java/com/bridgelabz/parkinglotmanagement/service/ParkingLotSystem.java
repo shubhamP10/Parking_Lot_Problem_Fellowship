@@ -8,8 +8,11 @@ import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
 
@@ -28,7 +31,7 @@ public class ParkingLotSystem {
     /**
      * Method To Park The Car.
      *
-     * @param car        Object
+     * @param car Object
      * @param driverType
      * @throws ParkingLotException LOT FULL
      */
@@ -87,5 +90,15 @@ public class ParkingLotSystem {
     public String findCar(Car car) {
         Slot slot = this.parkingMap.keySet().stream().filter(slot1 -> parkingMap.get(slot1).equals(car)).findFirst().get();
         return String.format("Parking Lot : %d  Slot Number : %d", slot.getLotId(), slot.getSlotId());
+    }
+
+    //Method To Get Parked Slots
+    public List<Integer> getParkedSlots() {
+        return parkingMap.keySet()
+                .stream()
+                .filter(slot -> slot.getSlotId() > 0)
+                .map(Slot::getSlotId)
+                .sorted(Comparator.comparing(Integer::intValue))
+                .collect(Collectors.toList());
     }
 }
