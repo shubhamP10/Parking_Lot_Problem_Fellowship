@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglotmanagement.service;
 
+import com.bridgelabz.parkinglotmanagement.enums.DriverType;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.model.ParkingLot;
@@ -8,6 +9,7 @@ import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Attendant implements IParkingLot {
@@ -18,7 +20,7 @@ public class Attendant implements IParkingLot {
     public int numberOfSlotsPerLot;
     public int slotCounter = 0;
     Slot removeSlot = new Slot();
-    List<Integer> unParkedList;
+    List<Integer> unParkedSlots;
 
     public Attendant(int parkingLotCapacity, int numberOfParkingLots, int numberOfSlotsPerLot) {
         this.parkingLotCapacity = parkingLotCapacity;
@@ -26,22 +28,35 @@ public class Attendant implements IParkingLot {
         this.numberOfSlotsPerLot = numberOfSlotsPerLot;
         this.parkingMap = new HashMap<>();
         observersList = new ArrayList<>();
-        unParkedList = new ArrayList<>();
+        unParkedSlots = new ArrayList<>();
     }
 
     public void addObserver(IParkingObserver... observers) {
         Collections.addAll(observersList, observers);
     }
 
-    public Map<Slot, Car> park(Car car) {
+    public Map<Slot, Car> park(Car car, DriverType driverType) {
         if (parkingMap.size() > this.parkingLotCapacity)
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         Slot slot = new Slot(ParkingLotUtility.getCurrentTime());
-        slotCounter++;
-        slot.setSlotId(slotCounter);
-        ParkingLot parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));
-        slot.setLot(parkingLot);
-        parkingMap.put(slot, car);
+        ParkingLot parkingLot;
+        switch (driverType) {
+            case NORMAL_DRIVER:
+                slotCounter++;
+                slot.setSlotId(slotCounter);
+                parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));
+                slot.setLot(parkingLot);
+                parkingMap.put(slot, car);
+                break;
+            case HANDICAP_DRIVER:
+                unParkedSlots.sort(Comparator.comparing(Integer::intValue));
+                slot.setSlotId(unParkedSlots.get(0));
+                parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));
+                slot.setLot(parkingLot);
+                parkingMap.put(slot, car);
+                break;
+        }
+
         this.notifyToObserver(parkingMap.size());
         return parkingMap;
     }
@@ -55,7 +70,7 @@ public class Attendant implements IParkingLot {
                 .filter(slot -> parkingMap.get(slot).equals(car))
                 .forEachOrdered(slot -> removeSlot = slot);
 
-        unParkedList.add(removeSlot.getSlotId());
+        unParkedSlots.add(removeSlot.getSlotId());
         parkingMap.remove(removeSlot); // To Avoid ConcurrentModificationException
         this.notifyToObserver(parkingMap.size());
         return parkingMap;
@@ -65,6 +80,4 @@ public class Attendant implements IParkingLot {
     public void notifyToObserver(int totalCarsParked) {
         observersList.forEach(observer -> observer.sendParkingStatus(totalCarsParked, this.parkingLotCapacity));
     }
-
-
 }

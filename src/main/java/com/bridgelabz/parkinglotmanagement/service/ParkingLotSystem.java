@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglotmanagement.service;
 
+import com.bridgelabz.parkinglotmanagement.enums.DriverType;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.model.Slot;
@@ -7,11 +8,8 @@ import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
 import java.sql.Timestamp;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
 
@@ -30,17 +28,18 @@ public class ParkingLotSystem {
     /**
      * Method To Park The Car.
      *
-     * @param car Object
+     * @param car        Object
+     * @param driverType
      * @throws ParkingLotException LOT FULL
      */
-    public void parkVehicle(Car car) throws ParkingLotException {
+    public void parkVehicle(Car car, DriverType driverType) throws ParkingLotException {
         parkingMap.keySet()
                 .stream()
                 .filter(slot -> parkingMap.get(slot).equals(car))
                 .forEach(slot -> {
                     throw new ParkingLotException(ParkingLotException.ExceptionType.DUPLICATE_VEHICLE);
                 });
-        parkingMap = attendant.park(car);
+        parkingMap = attendant.park(car, driverType);
     }
 
     /**
@@ -53,25 +52,18 @@ public class ParkingLotSystem {
         parkingMap = attendant.unPark(car);
     }
 
-    /**
-     * Method To Add Observers
-     *
-     * @param observers Interface
-     */
 
+    //Method To Add Observers
     public void addObserver(IParkingObserver... observers) {
         attendant.addObserver(observers);
     }
 
-    /**
-     * Method to Check is Car Is Parked or Not.
-     *
-     * @return boolean value
-     */
+    //Method To Check If Vehicle is Parked Or Not
     public boolean isParked(Car car) {
         return parkingMap.containsValue(car);
     }
 
+    //Method To Get Vehicle Parked Time
     public Timestamp getParkedTime(Car car) {
         return parkingMap.keySet()
                 .stream()
@@ -81,27 +73,19 @@ public class ParkingLotSystem {
                 .orElse(null);
     }
 
+    //Method TO Get Count Of Vehicles Parked
     public int getCountOfVehiclesParked() {
         return parkingMap.size();
     }
 
+    //Method To Get Count Of Cars In Each Lot
     public long getCarCountForEachLot(int lotId) {
         return parkingMap.keySet().stream().filter(slot -> slot.lot.getLotId() == lotId).count();
     }
 
-
+    //Method To Get Car Location
     public String findCar(Car car) {
         Slot slot = this.parkingMap.keySet().stream().filter(slot1 -> parkingMap.get(slot1).equals(car)).findFirst().get();
         return String.format("Parking Lot : %d  Slot Number : %d", slot.getLotId(), slot.getSlotId());
-    }
-
-    public List<Integer> getParkedSlots() {
-        List<Integer> parkedSlots = parkingMap.keySet()
-                .stream()
-                .filter(slot -> slot.getSlotId() > 0)
-                .map(Slot::getSlotId)
-                .collect(Collectors.toList());
-        parkedSlots.sort(Comparator.comparing(Integer::intValue));
-        return parkedSlots;
     }
 }

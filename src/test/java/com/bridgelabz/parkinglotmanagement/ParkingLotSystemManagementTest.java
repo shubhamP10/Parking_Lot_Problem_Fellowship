@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglotmanagement;
 
+import com.bridgelabz.parkinglotmanagement.enums.DriverType;
 import com.bridgelabz.parkinglotmanagement.enums.Notifications;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
@@ -11,8 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Timestamp;
-import java.util.Comparator;
-import java.util.List;
 
 public class ParkingLotSystemManagementTest {
 
@@ -31,7 +30,7 @@ public class ParkingLotSystemManagementTest {
     @Test
     public void givenVehicle_WhenPark_ShouldReturnTrue() {
         Car car = new Car("KA-48-S-8055");
-        parkingLotSystem.parkVehicle(car);
+        parkingLotSystem.parkVehicle(car, DriverType.NORMAL_DRIVER);
         boolean isParked = parkingLotSystem.isParked(car);
         Assert.assertTrue(isParked);
     }
@@ -40,7 +39,7 @@ public class ParkingLotSystemManagementTest {
     @Test
     public void givenVehicleToPark_WhenUnParked_ShouldReturnFalse() {
         Car car = new Car("KA-48-S-8055");
-        parkingLotSystem.parkVehicle(car);
+        parkingLotSystem.parkVehicle(car, DriverType.NORMAL_DRIVER);
         parkingLotSystem.unParkVehicle(car);
         boolean isParked = parkingLotSystem.isParked(car);
         Assert.assertFalse(isParked);
@@ -50,7 +49,7 @@ public class ParkingLotSystemManagementTest {
     public void givenVehicleToUnPark_WhenNull_ShouldThrowException() {
         try {
             Car car = new Car("KA-48-S-8055");
-            parkingLotSystem.parkVehicle(car);
+            parkingLotSystem.parkVehicle(car, DriverType.NORMAL_DRIVER);
             parkingLotSystem.unParkVehicle(null);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
@@ -65,10 +64,10 @@ public class ParkingLotSystemManagementTest {
         Car secondCar = new Car("KA-01-S-1234");
         Car thirdCar = new Car("KA-01-S-1234");
         Car forthCar = new Car("KA-01-S-1234");
-        parkingLotSystem.parkVehicle(firstCar);
-        parkingLotSystem.parkVehicle(secondCar);
-        parkingLotSystem.parkVehicle(thirdCar);
-        parkingLotSystem.parkVehicle(forthCar);
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(secondCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(thirdCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(forthCar, DriverType.NORMAL_DRIVER);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.message);
     }
 
@@ -80,10 +79,10 @@ public class ParkingLotSystemManagementTest {
         Car secondCar = new Car("KA-01-S-1234");
         Car thirdCar = new Car("KA-01-S-1234");
         Car forthCar = new Car("KA-01-S-1234");
-        parkingLotSystem.parkVehicle(firstCar);
-        parkingLotSystem.parkVehicle(secondCar);
-        parkingLotSystem.parkVehicle(thirdCar);
-        parkingLotSystem.parkVehicle(forthCar);
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(secondCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(thirdCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(forthCar, DriverType.NORMAL_DRIVER);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.message);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, security.message);
     }
@@ -97,10 +96,10 @@ public class ParkingLotSystemManagementTest {
             Car secondCar = new Car("KA-01-S-1234");
             Car thirdCar = new Car("KA-02-S-1234");
             Car forthCar = new Car("KA-02-S-1234");
-            parkingLotSystem.parkVehicle(firstCar);
-            parkingLotSystem.parkVehicle(secondCar);
-            parkingLotSystem.parkVehicle(thirdCar);
-            parkingLotSystem.parkVehicle(forthCar);
+            parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+            parkingLotSystem.parkVehicle(secondCar, DriverType.NORMAL_DRIVER);
+            parkingLotSystem.parkVehicle(thirdCar, DriverType.NORMAL_DRIVER);
+            parkingLotSystem.parkVehicle(forthCar, DriverType.NORMAL_DRIVER);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.LOT_FULL, e.type);
         }
@@ -111,7 +110,7 @@ public class ParkingLotSystemManagementTest {
         try {
             Car firstCar = new Car("KA-48-S-8055");
             Car secondCar = new Car("KA-01-S-8055");
-            parkingLotSystem.parkVehicle(firstCar);
+            parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
             parkingLotSystem.unParkVehicle(secondCar);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
@@ -125,8 +124,8 @@ public class ParkingLotSystemManagementTest {
         parkingLotSystem.addObserver(owner, security);
         Car car = new Car("KA-48-S-8055");
         Car car2 = new Car("KA-01-S-1234");
-        parkingLotSystem.parkVehicle(car);
-        parkingLotSystem.parkVehicle(car2);
+        parkingLotSystem.parkVehicle(car, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(car2, DriverType.NORMAL_DRIVER);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.message);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, security.message);
         parkingLotSystem.unParkVehicle(car2);
@@ -148,8 +147,8 @@ public class ParkingLotSystemManagementTest {
         parkingLotSystem.addObserver(owner);
         Car firstCar = new Car("KA-48-S-8055");
         Car secondCar = new Car("KA-01-S-1234");
-        parkingLotSystem.parkVehicle(firstCar);
-        parkingLotSystem.parkVehicle(secondCar);
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(secondCar, DriverType.NORMAL_DRIVER);
         parkingLotSystem.unParkVehicle(secondCar);
         Assert.assertFalse(parkingLotSystem.isParked(secondCar));
     }
@@ -161,10 +160,10 @@ public class ParkingLotSystemManagementTest {
         Car secondCar = new Car("KA-01-S-1234");
         Car thirdCar = new Car("KA-02-S-1234");
         Car forthCar = new Car("KA-02-S-1234");
-        parkingLotSystem.parkVehicle(firstCar);
-        parkingLotSystem.parkVehicle(secondCar);
-        parkingLotSystem.parkVehicle(thirdCar);
-        parkingLotSystem.parkVehicle(forthCar);
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(secondCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(thirdCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(forthCar, DriverType.NORMAL_DRIVER);
         Assert.assertEquals(Notifications.PARKING_LOT_IS_FULL.message, owner.message);
         parkingLotSystem.unParkVehicle(secondCar);
         Assert.assertEquals(Notifications.HAVE_SPACE_TO_PARK.message, owner.message);
@@ -175,7 +174,7 @@ public class ParkingLotSystemManagementTest {
     public void givenVehicleToPark_WhenParked_ShouldReturnParkedTime() {
         parkingLotSystem.addObserver(owner);
         Car firstCar = new Car("KA-48-S-8055");
-        parkingLotSystem.parkVehicle(firstCar);
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
         Timestamp parkedTime = parkingLotSystem.getParkedTime(firstCar);
         System.out.println(parkedTime);
     }
@@ -186,12 +185,12 @@ public class ParkingLotSystemManagementTest {
         Car secondCar = new Car("KA-01-S-1234");
         Car thirdCar = new Car("KA-02-S-1234");
         Car forthCar = new Car("KA-02-S-1234");
-        parkingLotSystem.parkVehicle(firstCar);
-        parkingLotSystem.parkVehicle(secondCar);
-        parkingLotSystem.parkVehicle(thirdCar);
-        parkingLotSystem.parkVehicle(forthCar);
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(secondCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(thirdCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(forthCar, DriverType.NORMAL_DRIVER);
         int count = parkingLotSystem.getCountOfVehiclesParked();
-        Assert.assertEquals(4,count);
+        Assert.assertEquals(4, count);
     }
 
     @Test
@@ -199,11 +198,11 @@ public class ParkingLotSystemManagementTest {
         try {
             Car firstCar = new Car("KA-48-S-8055");
             Car secondCar = new Car("KA-01-S-1234");
-            parkingLotSystem.parkVehicle(firstCar);
-            parkingLotSystem.parkVehicle(secondCar);
-            parkingLotSystem.parkVehicle(firstCar);
-        } catch (ParkingLotException e){
-            Assert.assertEquals(ParkingLotException.ExceptionType.DUPLICATE_VEHICLE,e.type);
+            parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+            parkingLotSystem.parkVehicle(secondCar, DriverType.NORMAL_DRIVER);
+            parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.DUPLICATE_VEHICLE, e.type);
         }
     }
 
@@ -212,11 +211,11 @@ public class ParkingLotSystemManagementTest {
         Car firstCar = new Car("KA-48-S-8055");
         Car secondCar = new Car("KA-01-S-1234");
         Car thirdCar = new Car("KA-02-S-1234");
-        parkingLotSystem.parkVehicle(firstCar);
-        parkingLotSystem.parkVehicle(secondCar);
-        parkingLotSystem.parkVehicle(thirdCar);
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(secondCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(thirdCar, DriverType.NORMAL_DRIVER);
         long count = parkingLotSystem.getCarCountForEachLot(1);
-        Assert.assertEquals(2,count);
+        Assert.assertEquals(2, count);
     }
 
     @Test
@@ -228,15 +227,27 @@ public class ParkingLotSystemManagementTest {
         Car forthCar = new Car("KA-02-S-1234");
         Car fifthCar = new Car("KA-02-S-1234");
         Car sixthCar = new Car("KA-02-S-1234");
-        parkingLotSystem.parkVehicle(firstCar);
-        parkingLotSystem.parkVehicle(secondCar);
-        parkingLotSystem.parkVehicle(thirdCar);
-        parkingLotSystem.parkVehicle(forthCar);
-        parkingLotSystem.parkVehicle(fifthCar);
-        parkingLotSystem.parkVehicle(sixthCar);
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(secondCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(thirdCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(forthCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(fifthCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(sixthCar, DriverType.NORMAL_DRIVER);
         String carLocation = parkingLotSystem.findCar(forthCar);
-        List<Integer> parkedSlots = parkingLotSystem.getParkedSlots();
-        System.out.println(parkedSlots);
         Assert.assertEquals("Parking Lot : 4  Slot Number : 4", carLocation);
+    }
+
+    @Test
+    public void givenVehicleToPark_WhenDriverIsHandicap_ShouldParkInNearestSlot() {
+        Car firstCar = new Car("KA-48-S-8055");
+        Car secondCar = new Car("KA-01-S-1234");
+        Car thirdCar = new Car("KA-02-S-1234");
+        Car forthCar = new Car("KA-02-S-1234");
+        parkingLotSystem.parkVehicle(firstCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(secondCar,DriverType.NORMAL_DRIVER);
+        parkingLotSystem.parkVehicle(thirdCar, DriverType.NORMAL_DRIVER);
+        parkingLotSystem.unParkVehicle(thirdCar);
+        parkingLotSystem.parkVehicle(forthCar, DriverType.HANDICAP_DRIVER);
+        System.out.println(parkingLotSystem.findCar(forthCar));
     }
 }
