@@ -55,6 +55,7 @@ public class Attendant implements IParkingLot {
                 slot.setSlotId(slotCounter);
                 parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));
                 slot.setLot(parkingLot);
+                slot.setCar(car);
                 parkingMap.put(slot, car);
                 break;
             case HANDICAP_DRIVER:
@@ -67,6 +68,7 @@ public class Attendant implements IParkingLot {
                 }
                 parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));
                 slot.setLot(parkingLot);
+                slot.setCar(car);
                 parkingMap.put(slot, car);
                 break;
         }

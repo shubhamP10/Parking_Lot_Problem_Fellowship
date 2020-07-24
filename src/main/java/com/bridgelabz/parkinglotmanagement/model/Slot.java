@@ -7,7 +7,7 @@ public class Slot {
     public ParkingLot lot;
     private Timestamp parkedTime;
     private int slotId;
-
+    Car car;
     public Slot(Timestamp parkedTime) {
         this.parkedTime = parkedTime;
     }
@@ -33,5 +33,13 @@ public class Slot {
 
     public int getLotId() {
         return lot.getLotId();
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public Car getCar() {
+        return car;
     }
 }

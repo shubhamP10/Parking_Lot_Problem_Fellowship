@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglotmanagement.service;
 
+import com.bridgelabz.parkinglotmanagement.enums.CarColor;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.model.Slot;
@@ -7,10 +8,7 @@ import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
 import java.sql.Timestamp;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
@@ -98,5 +96,14 @@ public class ParkingLotSystem {
                 .map(Slot::getSlotId)
                 .sorted(Comparator.comparing(Integer::intValue))
                 .collect(Collectors.toList());
+    }
+
+    public List<String> getCarLocationByColor(CarColor carColor) {
+        List<String> carLocationList = new ArrayList<>();
+        List<Slot> slotList = this.parkingMap.keySet().stream().filter(slot -> slot.getCar().getCarColor().equals(carColor)).collect(Collectors.toList());
+        slotList.forEach(slot -> {
+            carLocationList.add("Lot Number: "+slot.getLotId()+" On Slot: "+slot.getSlotId());
+        });
+        return carLocationList;
     }
 }
