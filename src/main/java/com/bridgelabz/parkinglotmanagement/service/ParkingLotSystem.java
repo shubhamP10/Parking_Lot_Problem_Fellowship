@@ -2,14 +2,16 @@ package com.bridgelabz.parkinglotmanagement.service;
 
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
-import com.bridgelabz.parkinglotmanagement.model.ParkingLot;
 import com.bridgelabz.parkinglotmanagement.model.Slot;
 import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
 
@@ -83,13 +85,23 @@ public class ParkingLotSystem {
         return parkingMap.size();
     }
 
-    public long getCarCountForEachLot(int lotId){
+    public long getCarCountForEachLot(int lotId) {
         return parkingMap.keySet().stream().filter(slot -> slot.lot.getLotId() == lotId).count();
     }
 
 
     public String findCar(Car car) {
         Slot slot = this.parkingMap.keySet().stream().filter(slot1 -> parkingMap.get(slot1).equals(car)).findFirst().get();
-        return String.format("Parking Lot : %d  Slot Number : %d",slot.getLotId(), slot.getSlotId());
+        return String.format("Parking Lot : %d  Slot Number : %d", slot.getLotId(), slot.getSlotId());
+    }
+
+    public List<Integer> getParkedSlots() {
+        List<Integer> parkedSlots = parkingMap.keySet()
+                .stream()
+                .filter(slot -> slot.getSlotId() > 0)
+                .map(Slot::getSlotId)
+                .collect(Collectors.toList());
+        parkedSlots.sort(Comparator.comparing(Integer::intValue));
+        return parkedSlots;
     }
 }

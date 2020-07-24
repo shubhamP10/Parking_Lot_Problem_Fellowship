@@ -7,7 +7,6 @@ import com.bridgelabz.parkinglotmanagement.model.Slot;
 import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 
@@ -19,6 +18,7 @@ public class Attendant implements IParkingLot {
     public int numberOfSlotsPerLot;
     public int slotCounter = 0;
     Slot removeSlot = new Slot();
+    List<Integer> unParkedList;
 
     public Attendant(int parkingLotCapacity, int numberOfParkingLots, int numberOfSlotsPerLot) {
         this.parkingLotCapacity = parkingLotCapacity;
@@ -26,6 +26,7 @@ public class Attendant implements IParkingLot {
         this.numberOfSlotsPerLot = numberOfSlotsPerLot;
         this.parkingMap = new HashMap<>();
         observersList = new ArrayList<>();
+        unParkedList = new ArrayList<>();
     }
 
     public void addObserver(IParkingObserver... observers) {
@@ -54,6 +55,7 @@ public class Attendant implements IParkingLot {
                 .filter(slot -> parkingMap.get(slot).equals(car))
                 .forEachOrdered(slot -> removeSlot = slot);
 
+        unParkedList.add(removeSlot.getSlotId());
         parkingMap.remove(removeSlot); // To Avoid ConcurrentModificationException
         this.notifyToObserver(parkingMap.size());
         return parkingMap;

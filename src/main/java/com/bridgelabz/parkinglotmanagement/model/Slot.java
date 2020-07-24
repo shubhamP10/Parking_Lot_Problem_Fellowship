@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class Slot {
 
     private Timestamp parkedTime;
-    public int slotId;
+    private int slotId;
     public ParkingLot lot;
 
     public Slot(Timestamp parkedTime) {

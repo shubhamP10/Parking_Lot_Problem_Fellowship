@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
+import java.util.List;
 
 public class ParkingLotSystemManagementTest {
 
@@ -143,7 +145,6 @@ public class ParkingLotSystemManagementTest {
 
     @Test
     public void givenVehicleToUnPark_WhenNotFoundVehicle_ShouldReturnFalse() {
-        parkingLotSystem = new ParkingLotSystem(4, 2);
         parkingLotSystem.addObserver(owner);
         Car firstCar = new Car("KA-48-S-8055");
         Car secondCar = new Car("KA-01-S-1234");
@@ -155,7 +156,6 @@ public class ParkingLotSystemManagementTest {
 
     @Test
     public void givenVehicle_WhenParkedAtEveryLot_ShouldInformLotFull() {
-        parkingLotSystem = new ParkingLotSystem(4, 2);
         parkingLotSystem.addObserver(owner);
         Car firstCar = new Car("KA-48-S-8055");
         Car secondCar = new Car("KA-01-S-1234");
@@ -221,13 +221,22 @@ public class ParkingLotSystemManagementTest {
 
     @Test
     public void givenVehiclePark_WhenAskedToGetLocation_ShouldReturnLocationOfVehicle() {
+        parkingLotSystem = new ParkingLotSystem(6, 4);
         Car firstCar = new Car("KA-48-S-8055");
         Car secondCar = new Car("KA-01-S-1234");
         Car thirdCar = new Car("KA-02-S-1234");
+        Car forthCar = new Car("KA-02-S-1234");
+        Car fifthCar = new Car("KA-02-S-1234");
+        Car sixthCar = new Car("KA-02-S-1234");
         parkingLotSystem.parkVehicle(firstCar);
         parkingLotSystem.parkVehicle(secondCar);
         parkingLotSystem.parkVehicle(thirdCar);
-        String carLocation = parkingLotSystem.findCar(thirdCar);
-        Assert.assertEquals("Parking Lot : 1  Slot Number : 3", carLocation);
+        parkingLotSystem.parkVehicle(forthCar);
+        parkingLotSystem.parkVehicle(fifthCar);
+        parkingLotSystem.parkVehicle(sixthCar);
+        String carLocation = parkingLotSystem.findCar(forthCar);
+        List<Integer> parkedSlots = parkingLotSystem.getParkedSlots();
+        System.out.println(parkedSlots);
+        Assert.assertEquals("Parking Lot : 4  Slot Number : 4", carLocation);
     }
 }
