@@ -1,6 +1,5 @@
 package com.bridgelabz.parkinglotmanagement.service;
 
-import com.bridgelabz.parkinglotmanagement.enums.DriverType;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.model.Slot;
@@ -32,17 +31,16 @@ public class ParkingLotSystem {
      * Method To Park The Car.
      *
      * @param car Object
-     * @param driverType
      * @throws ParkingLotException LOT FULL
      */
-    public void parkVehicle(Car car, DriverType driverType) throws ParkingLotException {
+    public void parkVehicle(Car car) throws ParkingLotException {
         parkingMap.keySet()
                 .stream()
                 .filter(slot -> parkingMap.get(slot).equals(car))
                 .forEach(slot -> {
                     throw new ParkingLotException(ParkingLotException.ExceptionType.DUPLICATE_VEHICLE);
                 });
-        parkingMap = attendant.park(car, driverType);
+        parkingMap = attendant.park(car);
     }
 
     /**

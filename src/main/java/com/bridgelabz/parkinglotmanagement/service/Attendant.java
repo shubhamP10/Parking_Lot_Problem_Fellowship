@@ -1,6 +1,6 @@
 package com.bridgelabz.parkinglotmanagement.service;
 
-import com.bridgelabz.parkinglotmanagement.enums.DriverType;
+import com.bridgelabz.parkinglotmanagement.enums.CarType;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.model.ParkingLot;
@@ -34,14 +34,24 @@ public class Attendant implements IParkingLot {
         Collections.addAll(observersList, observers);
     }
 
-    public Map<Slot, Car> park(Car car, DriverType driverType) {
+    public Map<Slot, Car> park(Car car) {
         if (parkingMap.size() > this.parkingLotCapacity)
             throw new ParkingLotException(ParkingLotException.ExceptionType.LOT_FULL);
         Slot slot = new Slot(ParkingLotUtility.getCurrentTime());
         ParkingLot parkingLot;
-        switch (driverType) {
+        switch (car.getDriverType()) {
             case NORMAL_DRIVER:
                 slotCounter++;
+                if (car.getCarType().equals(CarType.LARGE_CAR)) {
+                    slot.setSlotId(slotCounter);
+                    parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));
+                    slot.setLot(parkingLot);
+                    if ((parkingLotCapacity / numberOfParkingLots) - slot.lot.getCarCounter() >= 2) {
+                        parkingMap.put(slot, car);
+                        break;
+                    }
+                    throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SPACE_FOR_LARGE_CAR);
+                }
                 slot.setSlotId(slotCounter);
                 parkingLot = new ParkingLot(ParkingLotUtility.assignLot(slot.getSlotId()));
                 slot.setLot(parkingLot);
