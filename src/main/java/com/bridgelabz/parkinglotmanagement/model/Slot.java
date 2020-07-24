@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 
 public class Slot {
 
+    public ParkingLot lot;
     private Timestamp parkedTime;
     private int slotId;
-    public ParkingLot lot;
 
     public Slot(Timestamp parkedTime) {
         this.parkedTime = parkedTime;
@@ -15,7 +15,7 @@ public class Slot {
     public Slot() {
     }
 
-    public Timestamp getParkedTime(){
+    public Timestamp getParkedTime() {
         return parkedTime;
     }
 
@@ -31,7 +31,7 @@ public class Slot {
         this.lot = lot;
     }
 
-    public int getLotId(){
+    public int getLotId() {
         return lot.getLotId();
     }
 }

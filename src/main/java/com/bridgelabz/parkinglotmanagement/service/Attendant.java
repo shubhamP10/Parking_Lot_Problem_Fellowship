@@ -9,7 +9,6 @@ import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class Attendant implements IParkingLot {
