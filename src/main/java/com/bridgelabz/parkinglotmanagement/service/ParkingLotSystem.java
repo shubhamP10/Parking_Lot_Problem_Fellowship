@@ -101,9 +101,9 @@ public class ParkingLotSystem {
     public List<String> getCarLocationByColor(CarColor carColor) {
         List<String> carLocationList = new ArrayList<>();
         List<Slot> slotList = this.parkingMap.keySet().stream().filter(slot -> slot.getCar().getCarColor().equals(carColor)).collect(Collectors.toList());
-        slotList.forEach(slot -> {
-            carLocationList.add("Lot Number: "+slot.getLotId()+" On Slot: "+slot.getSlotId());
-        });
+        slotList.forEach(slot -> carLocationList.add("Lot Number: "+slot.getLotId()+" On Slot: "+slot.getSlotId()));
+        if (carLocationList.size() == 0)
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         return carLocationList;
     }
 }

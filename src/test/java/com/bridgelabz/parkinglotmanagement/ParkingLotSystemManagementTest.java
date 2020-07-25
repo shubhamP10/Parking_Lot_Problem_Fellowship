@@ -321,4 +321,22 @@ public class ParkingLotSystemManagementTest {
         List<String> expectedList = Arrays.asList("Lot Number: 1 On Slot: 1", "Lot Number: 2 On Slot: 4");
         assertEquals(expectedList, carLocationByColor);
     }
+
+    @Test
+    public void givenVehiclesToPark_WhenThereIsNoWhiteColorCarsParked_ShouldThrowException() {
+        try {
+            parkingLotSystem = new ParkingLotSystem(4, 2);
+            firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE);
+            secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE);
+            thirdCar = new Car("KA-02-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE);
+            forthCar = new Car("KA-02-S-1222", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE);
+            parkingLotSystem.parkVehicle(firstCar);
+            parkingLotSystem.parkVehicle(secondCar);
+            parkingLotSystem.parkVehicle(thirdCar);
+            parkingLotSystem.parkVehicle(forthCar);
+            parkingLotSystem.getCarLocationByColor(CarColor.WHITE);
+        } catch (ParkingLotException e){
+            Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
+        }
+    }
 }
