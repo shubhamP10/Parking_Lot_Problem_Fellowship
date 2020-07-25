@@ -117,7 +117,22 @@ public class ParkingLotSystem {
                 .stream()
                 .filter(slot -> slot.getCar().getCarColor().equals(carColor) && slot.getCar().getCarCompany().equals(carCompany))
                 .collect(Collectors.toList());
-        slotList.forEach(slot -> carLocationList.add("Lot Number: " + slot.getLotId() + " On Slot: " + slot.getSlotId()+" Plate Number: "+slot.getCar().getPlateNumber()));
+        slotList.forEach(slot -> carLocationList.add("Lot Number: " + slot.getLotId()
+                + " On Slot: " + slot.getSlotId()
+                + " Plate Number: " + slot.getCar().getPlateNumber()));
+        if (carLocationList.size() == 0)
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
+        return carLocationList;
+    }
+
+    public List<String> getCarLocationByCarCompany(CarCompany carCompany) {
+        List<String> carLocationList = new ArrayList<>();
+        List<Slot> slotList = this.parkingMap.keySet()
+                .stream()
+                .filter(slot -> slot.getCar().getCarCompany().equals(carCompany))
+                .collect(Collectors.toList());
+        slotList.forEach(slot -> carLocationList.add("Lot Number: " + slot.getLotId()
+                + " On Slot: " + slot.getSlotId()));
         if (carLocationList.size() == 0)
             throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         return carLocationList;

@@ -1,7 +1,7 @@
 package com.bridgelabz.parkinglotmanagement.enums;
 
 public enum CarCompany {
-    TOYOTA("Toyota");
+    TOYOTA("Toyota"), BMW("BMW");
 
     String carCompany;
 

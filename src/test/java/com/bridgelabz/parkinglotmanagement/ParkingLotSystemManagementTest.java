@@ -295,7 +295,6 @@ public class ParkingLotSystemManagementTest {
     @Test
     public void givenLargeVehicleToPark_WhenNoSpace_ShouldThrowException() {
         try {
-            parkingLotSystem = new ParkingLotSystem(4, 2);
             firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
             secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
             thirdCar = new Car("KA-02-S-1234", DriverType.NORMAL_DRIVER, CarType.LARGE_CAR, CarColor.BLUE, CarCompany.TOYOTA);
@@ -310,7 +309,6 @@ public class ParkingLotSystemManagementTest {
     // UC12
     @Test
     public void givenVehiclesToPark_WhenAskedForWhiteColor_ShouldReturnLocationOfAllWhiteCars() {
-        parkingLotSystem = new ParkingLotSystem(4, 2);
         firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.TOYOTA);
         secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
         thirdCar = new Car("KA-02-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
@@ -327,7 +325,6 @@ public class ParkingLotSystemManagementTest {
     @Test
     public void givenVehiclesToPark_WhenThereIsNoWhiteColorCarsParked_ShouldThrowException() {
         try {
-            parkingLotSystem = new ParkingLotSystem(4, 2);
             firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
             secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
             thirdCar = new Car("KA-02-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
@@ -344,9 +341,8 @@ public class ParkingLotSystemManagementTest {
 
     @Test
     public void givenColorAndCompanyOfCar_WhenSearchInAllLots_ShouldReturnCarLocationPlateNumber() {
-        parkingLotSystem = new ParkingLotSystem(4, 2);
         firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.TOYOTA);
-        secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
+        secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.BMW);
         thirdCar = new Car("KA-02-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.TOYOTA);
         forthCar = new Car("KA-02-S-1222", DriverType.HANDICAP_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
         parkingLotSystem.parkVehicle(firstCar);
@@ -354,14 +350,13 @@ public class ParkingLotSystemManagementTest {
         parkingLotSystem.parkVehicle(thirdCar);
         parkingLotSystem.parkVehicle(forthCar);
         List<String> carLocationByColorAndCompanyName = parkingLotSystem.getCarLocationByColorAndCompanyName(CarColor.BLUE, CarCompany.TOYOTA);
-        List<String> expectedList = Arrays.asList("Lot Number: 2 On Slot: 2 Plate Number: KA-01-S-1234", "Lot Number: 2 On Slot: 4 Plate Number: KA-02-S-1222");
+        List<String> expectedList = Arrays.asList("Lot Number: 2 On Slot: 4 Plate Number: KA-02-S-1222");
         Assert.assertEquals(expectedList, carLocationByColorAndCompanyName);
     }
 
     @Test
     public void givenColorAndCompanyOfCar_WhenThereIsNoSuchCar_ShouldThrowException() {
         try {
-            parkingLotSystem = new ParkingLotSystem(4, 2);
             firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.TOYOTA);
             secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.TOYOTA);
             thirdCar = new Car("KA-02-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.TOYOTA);
@@ -371,6 +366,38 @@ public class ParkingLotSystemManagementTest {
             parkingLotSystem.parkVehicle(thirdCar);
             parkingLotSystem.parkVehicle(forthCar);
             parkingLotSystem.getCarLocationByColorAndCompanyName(CarColor.BLUE, CarCompany.TOYOTA);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
+        }
+    }
+
+    @Test
+    public void givenCarToPark_WhenAskedForALlBMWCars_ShouldReturnCarLocation() {
+        firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.BMW);
+        secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
+        thirdCar = new Car("KA-02-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.TOYOTA);
+        forthCar = new Car("KA-02-S-1222", DriverType.HANDICAP_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
+        parkingLotSystem.parkVehicle(firstCar);
+        parkingLotSystem.parkVehicle(secondCar);
+        parkingLotSystem.parkVehicle(thirdCar);
+        parkingLotSystem.parkVehicle(forthCar);
+        List<String> carLocationByCarCompany = parkingLotSystem.getCarLocationByCarCompany(CarCompany.BMW);
+        List<String> expectedList = Arrays.asList("Lot Number: 1 On Slot: 1");
+        Assert.assertEquals(expectedList, carLocationByCarCompany);
+    }
+
+    @Test
+    public void givenCompanyOfCarToSearch_WhenThereIsNoCarParked_ShouldThrowException() {
+        try {
+            firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.TOYOTA);
+            secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
+            thirdCar = new Car("KA-02-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.TOYOTA);
+            forthCar = new Car("KA-02-S-1222", DriverType.HANDICAP_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
+            parkingLotSystem.parkVehicle(firstCar);
+            parkingLotSystem.parkVehicle(secondCar);
+            parkingLotSystem.parkVehicle(thirdCar);
+            parkingLotSystem.parkVehicle(forthCar);
+            parkingLotSystem.getCarLocationByCarCompany(CarCompany.BMW);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
         }
