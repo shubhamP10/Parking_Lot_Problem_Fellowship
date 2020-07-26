@@ -8,7 +8,8 @@ import com.bridgelabz.parkinglotmanagement.model.Slot;
 import com.bridgelabz.parkinglotmanagement.observer.IParkingObserver;
 import com.bridgelabz.parkinglotmanagement.utility.ParkingLotUtility;
 
-import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -64,7 +65,7 @@ public class ParkingLotSystem {
     }
 
     //Method To Get Vehicle Parked Time
-    public Timestamp getParkedTime(Car car) {
+    public LocalDateTime getParkedTime(Car car) {
         return parkingMap.keySet()
                 .stream()
                 .filter(slot -> parkingMap.get(slot).equals(car))
@@ -136,5 +137,19 @@ public class ParkingLotSystem {
         if (carLocationList.size() == 0)
             throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         return carLocationList;
+    }
+
+    public List<String> getAllCarsDetailsParkedWithinTimeRange(int minutes) {
+        List<String> carDetailsList = new ArrayList<>();
+        List<Slot> slotList = this.parkingMap.keySet()
+                .stream()
+                .filter(slot -> Duration.between(slot.getParkedTime(), LocalDateTime.now()).toMinutes() <= minutes)
+                .collect(Collectors.toList());
+        slotList.forEach(slot -> carDetailsList.add("Lot: "+slot.getLotId()
+                +" Slot Number: "+slot.getSlotId()
+                +" Plate Number: "+slot.getCar().getPlateNumber()));
+        if (carDetailsList.size() == 0)
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
+        return carDetailsList;
     }
 }

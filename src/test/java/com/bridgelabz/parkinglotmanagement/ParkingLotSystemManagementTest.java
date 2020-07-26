@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,12 +21,7 @@ public class ParkingLotSystemManagementTest {
     ParkingLotSystem parkingLotSystem = null;
     Owner owner = null;
     AirportSecurity security = null;
-    Car firstCar;
-    Car secondCar;
-    Car thirdCar;
-    Car forthCar;
-    Car fifthCar;
-    Car sixthCar;
+    Car firstCar, secondCar, thirdCar, forthCar, fifthCar, sixthCar;
 
     @Before
     public void setUp() {
@@ -184,7 +179,7 @@ public class ParkingLotSystemManagementTest {
         parkingLotSystem.addObserver(owner);
         firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
         parkingLotSystem.parkVehicle(firstCar);
-        Timestamp parkedTime = parkingLotSystem.getParkedTime(firstCar);
+        LocalDateTime parkedTime = parkingLotSystem.getParkedTime(firstCar);
         System.out.println(parkedTime);
     }
 
@@ -318,7 +313,7 @@ public class ParkingLotSystemManagementTest {
         parkingLotSystem.parkVehicle(thirdCar);
         parkingLotSystem.parkVehicle(forthCar);
         List<String> carLocationByColor = parkingLotSystem.getCarLocationByColor(CarColor.WHITE);
-        List<String> expectedList = Arrays.asList("Lot Number: 1 On Slot: 1", "Lot Number: 2 On Slot: 4");
+        List<String> expectedList = Arrays.asList("Lot Number: 2 On Slot: 4", "Lot Number: 1 On Slot: 1");
         assertEquals(expectedList, carLocationByColor);
     }
 
@@ -398,6 +393,27 @@ public class ParkingLotSystemManagementTest {
             parkingLotSystem.parkVehicle(thirdCar);
             parkingLotSystem.parkVehicle(forthCar);
             parkingLotSystem.getCarLocationByCarCompany(CarCompany.BMW);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
+        }
+    }
+
+    @Test
+    public void givenVehicleToPark_WhenAskedToGetAllCarsParkedInLast30Minutes_ShouldReturnCarsDetails() {
+        firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.BMW);
+        secondCar = new Car("KA-01-S-1234", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
+        parkingLotSystem.parkVehicle(firstCar);
+        parkingLotSystem.parkVehicle(secondCar);
+        List<String> carsDetailsParkedWithinTimeRange = parkingLotSystem.getAllCarsDetailsParkedWithinTimeRange(30);
+        List<String> expectedList = Arrays.asList("Lot: 1 Slot Number: 1 Plate Number: KA-48-S-8055",
+                "Lot: 2 Slot Number: 2 Plate Number: KA-01-S-1234");
+        Assert.assertEquals(expectedList, carsDetailsParkedWithinTimeRange);
+    }
+
+    @Test
+    public void givenTimeRangeToGetCarDetails_WhenNoCarsParked_ShouldThrowException() {
+        try {
+            parkingLotSystem.getAllCarsDetailsParkedWithinTimeRange(30);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
         }

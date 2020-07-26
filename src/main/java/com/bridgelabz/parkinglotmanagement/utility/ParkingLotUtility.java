@@ -1,7 +1,7 @@
 package com.bridgelabz.parkinglotmanagement.utility;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ParkingLotUtility {
     public static int lotNumber = 0;
@@ -47,13 +47,8 @@ public class ParkingLotUtility {
     }
 
     //Method To Get Current Timestamp
-    public static Timestamp getCurrentTime() {
-        //Date object
-        Date date = new Date();
-        //getTime() returns current time in milliseconds
-        long time = date.getTime();
-        //Passed the milliseconds to constructor of Timestamp class
-        return new Timestamp(time);
+    public static LocalDateTime getCurrentTime() {
+        return LocalDateTime.now().withNano(0);
     }
 
     public int getNumberOfSlotsPerLot() {

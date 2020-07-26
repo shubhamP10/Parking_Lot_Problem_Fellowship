@@ -1,21 +1,22 @@
 package com.bridgelabz.parkinglotmanagement.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Slot {
 
     public ParkingLot lot;
-    private Timestamp parkedTime;
-    private int slotId;
     Car car;
-    public Slot(Timestamp parkedTime) {
+    private LocalDateTime parkedTime;
+    private int slotId;
+
+    public Slot(LocalDateTime parkedTime) {
         this.parkedTime = parkedTime;
     }
 
     public Slot() {
     }
 
-    public Timestamp getParkedTime() {
+    public LocalDateTime getParkedTime() {
         return parkedTime;
     }
 
@@ -35,11 +36,11 @@ public class Slot {
         return lot.getLotId();
     }
 
-    public void setCar(Car car) {
-        this.car = car;
-    }
-
     public Car getCar() {
         return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 }
