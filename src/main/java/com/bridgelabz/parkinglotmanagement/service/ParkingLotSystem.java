@@ -170,4 +170,13 @@ public class ParkingLotSystem {
             throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         return carDetailsList;
     }
+
+    public List<String> getDetailsOfAllParkedCars() {
+        List<String> carDetailsList = new ArrayList<>();
+        List<Slot> slotList = new ArrayList<>(this.parkingMap.keySet());
+        slotList.forEach(slot -> carDetailsList.add(slot.getCar().getPlateNumber()));
+        if (carDetailsList.size() == 0)
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
+        return carDetailsList;
+    }
 }

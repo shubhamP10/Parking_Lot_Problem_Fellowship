@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class ParkingLotSystemManagementTest {
 
@@ -22,12 +23,14 @@ public class ParkingLotSystemManagementTest {
     Owner owner = null;
     AirportSecurity security = null;
     Car firstCar, secondCar, thirdCar, forthCar, fifthCar, sixthCar;
+    List<String> fraudulentPlateNumbers;
 
     @Before
     public void setUp() {
         parkingLotSystem = new ParkingLotSystem(4, 2);
         owner = new Owner();
         security = new AirportSecurity();
+        fraudulentPlateNumbers = Arrays.asList("KA-11-Z-1111", "KA-49-M-0001");
     }
 
     //    UC1
@@ -313,7 +316,7 @@ public class ParkingLotSystemManagementTest {
         parkingLotSystem.parkVehicle(thirdCar);
         parkingLotSystem.parkVehicle(forthCar);
         List<String> carLocationByColor = parkingLotSystem.getCarLocationByColor(CarColor.WHITE);
-        List<String> expectedList = Arrays.asList("Lot Number: 2 On Slot: 4", "Lot Number: 1 On Slot: 1");
+        List<String> expectedList = Arrays.asList("Lot Number: 1 On Slot: 1", "Lot Number: 2 On Slot: 4");
         assertEquals(expectedList, carLocationByColor);
     }
 
@@ -441,7 +444,20 @@ public class ParkingLotSystemManagementTest {
             parkingLotSystem.parkVehicle(secondCar);
             parkingLotSystem.getDetailsOfAllSmallCarsByLotAndDriverType(1, DriverType.HANDICAP_DRIVER);
         } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
+            assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
         }
+    }
+
+    @Test
+    public void givenVehiclesToPark_WhenAskedForFraudulentPlateNumbers_ShouldReturnDetailsOfAllCarsParked() {
+        firstCar = new Car("KA-11-Z-1111", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.BMW);
+        secondCar = new Car("KA-01-S-1111", DriverType.HANDICAP_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
+        parkingLotSystem.parkVehicle(firstCar);
+        parkingLotSystem.parkVehicle(secondCar);
+        Assert.assertTrue(parkingLotSystem.isParked(firstCar));
+        Assert.assertTrue(parkingLotSystem.isParked(secondCar));
+        List<String> detailsOfAllParkedCars = parkingLotSystem.getDetailsOfAllParkedCars();
+        assertEquals(fraudulentPlateNumbers.get(0), detailsOfAllParkedCars.get(0));
+        assertNotEquals(fraudulentPlateNumbers.get(1), detailsOfAllParkedCars.get(1));
     }
 }
