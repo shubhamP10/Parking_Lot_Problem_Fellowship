@@ -2,6 +2,8 @@ package com.bridgelabz.parkinglotmanagement.service;
 
 import com.bridgelabz.parkinglotmanagement.enums.CarColor;
 import com.bridgelabz.parkinglotmanagement.enums.CarCompany;
+import com.bridgelabz.parkinglotmanagement.enums.CarType;
+import com.bridgelabz.parkinglotmanagement.enums.DriverType;
 import com.bridgelabz.parkinglotmanagement.exception.ParkingLotException;
 import com.bridgelabz.parkinglotmanagement.model.Car;
 import com.bridgelabz.parkinglotmanagement.model.Slot;
@@ -145,9 +147,25 @@ public class ParkingLotSystem {
                 .stream()
                 .filter(slot -> Duration.between(slot.getParkedTime(), LocalDateTime.now()).toMinutes() <= minutes)
                 .collect(Collectors.toList());
-        slotList.forEach(slot -> carDetailsList.add("Lot: "+slot.getLotId()
-                +" Slot Number: "+slot.getSlotId()
-                +" Plate Number: "+slot.getCar().getPlateNumber()));
+        slotList.forEach(slot -> carDetailsList.add("Lot: " + slot.getLotId()
+                + " Slot Number: " + slot.getSlotId()
+                + " Plate Number: " + slot.getCar().getPlateNumber()));
+        if (carDetailsList.size() == 0)
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
+        return carDetailsList;
+    }
+
+    public List<String> getDetailsOfAllSmallCarsByLotAndDriverType(int lotNumber, DriverType driverType) {
+        List<String> carDetailsList = new ArrayList<>();
+        List<Slot> slotList = this.parkingMap.keySet()
+                .stream()
+                .filter(slot -> slot.getCar().getDriverType().equals(driverType)
+                        && slot.getLotId() == lotNumber
+                        && slot.getCar().getCarType().equals(CarType.SMALL_CAR))
+                .collect(Collectors.toList());
+        slotList.forEach(slot -> carDetailsList.add("Lot: " + slot.getLotId()
+                + " Slot Number: " + slot.getSlotId()
+                + " Plate Number: " + slot.getCar().getPlateNumber()));
         if (carDetailsList.size() == 0)
             throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE);
         return carDetailsList;

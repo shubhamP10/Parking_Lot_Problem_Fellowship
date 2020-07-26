@@ -418,4 +418,30 @@ public class ParkingLotSystemManagementTest {
             Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
         }
     }
+
+    @Test
+    public void givenVehiclesToPark_WhenAskedForSmallHandicapCars_ShouldReturnLocationAndInformation() {
+        firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.BMW);
+        secondCar = new Car("KA-01-S-1111", DriverType.HANDICAP_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
+        thirdCar = new Car("KA-20-P-2222", DriverType.HANDICAP_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.BMW);
+        parkingLotSystem.parkVehicle(firstCar);
+        parkingLotSystem.parkVehicle(secondCar);
+        parkingLotSystem.parkVehicle(thirdCar);
+        List<String> carsByLotAndDriverType = parkingLotSystem.getDetailsOfAllSmallCarsByLotAndDriverType(2, DriverType.HANDICAP_DRIVER);
+        List<String> expectedList = Arrays.asList("Lot: 2 Slot Number: 2 Plate Number: KA-01-S-1111");
+        Assert.assertEquals(expectedList, carsByLotAndDriverType);
+    }
+
+    @Test
+    public void givenHandicapDriverAndLotNumber_WhenThereIsNoCarParkedByHandicapDriver_ShouldThrowException() {
+        try {
+            firstCar = new Car("KA-48-S-8055", DriverType.NORMAL_DRIVER, CarType.SMALL_CAR, CarColor.WHITE, CarCompany.BMW);
+            secondCar = new Car("KA-01-S-1111", DriverType.HANDICAP_DRIVER, CarType.SMALL_CAR, CarColor.BLUE, CarCompany.TOYOTA);
+            parkingLotSystem.parkVehicle(firstCar);
+            parkingLotSystem.parkVehicle(secondCar);
+            parkingLotSystem.getDetailsOfAllSmallCarsByLotAndDriverType(1, DriverType.HANDICAP_DRIVER);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, e.type);
+        }
+    }
 }
